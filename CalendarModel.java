@@ -27,7 +27,7 @@ public class CalendarModel {
     
     /**
     Constructs the calendar model
-    @param cd - [FILL THIS IN]
+    @param cd - current date
     */
     public CalendarModel(LocalDate cd) {
         currentDate = cd;
