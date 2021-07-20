@@ -2,9 +2,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 
+/**
+ * @author Nick Fong
+ *
+ */
+
+/**
+ A calendar application.
+ */
+
 public class CalendarTester {
     public int firstOfMonth;
 
+    /**
+    Captures the current date upon construction of the calendar application.
+    */
     public CalendarTester() {
 
         LocalDate cal = LocalDate.now(); // capture today
@@ -14,6 +26,10 @@ public class CalendarTester {
 
     }
 
+    /**
+    A tester method for the calendar application.
+    @param args unused
+    */
     public static void main(String[] args) {
         LocalDate cal = LocalDate.now(); // capture today
         LocalDate x = LocalDate.of(cal.getYear(), cal.getMonth(), 1);
