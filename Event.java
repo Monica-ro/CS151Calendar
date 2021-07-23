@@ -1,5 +1,3 @@
-package project;
-
 import java.time.*;
 
 /**
@@ -36,16 +34,17 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a recurring event
 	*/
-	public Event(String name, String daysofTheWeek, TimeInterval ti, LocalDate date, boolean isRecurring,
-			int startMonth, int endMonth, int year) {
+	public Event(String name, int year, int startMonth, int endMonth, String daysofTheWeek, TimeInterval ti, boolean isRecurring) {
 		this.name = name;
-		this.daysofTheWeek = daysofTheWeek;
-		this.ti = ti;
-		this.date = date;
-		this.isRecurring = true;
+		this.year = year;
 		this.startMonth = startMonth;
 		this.endMonth = endMonth;
-		this.year = year;
+		this.daysofTheWeek = daysofTheWeek;
+		this.ti = ti;
+		//this.date = date;
+		this.isRecurring = true;
+		
+		
 	}
 
 	
@@ -54,8 +53,7 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a one-time event
 	*/
-	public Event(String name, String daysofTheWeek, TimeInterval ti, LocalDate date, boolean isRecurring,
-			int startMonth, int endMonth, int year) {
+	public Event(String name, String daysofTheWeek, TimeInterval ti, LocalDate date, boolean isRecurring) {
 		//TODO - need to figure out way to convert int day of week to String, may need an array or method
 		// same for start month and end month
 		this.name = name;
@@ -63,9 +61,9 @@ public class Event implements Comparable<Event> {
 		this.ti = ti;
 		this.date = date;
 		this.isRecurring = false;
-		this.startMonth = startMonth;
-		this.endMonth = endMonth;
-		this.year = year;
+		this.startMonth = date.getMonthValue();
+		this.endMonth = date.getMonthValue();
+		this.year = date.getYear();
 	}
 
 	
@@ -105,19 +103,20 @@ public class Event implements Comparable<Event> {
 
 
 	/**
-	 * TODO
-	 Returns the time interval of an event.
-	@return ti - the time interval of an event, which contains the start time and end time.
+	 *
+	 Returns the date of a one-time event.
+	@return date - the event's date
 	*/
 	public LocalDate getDate() {
-		return date;
+		if (isRecurring==false) {
+			return date;
+		}
 	}
 
 
 	/**
-	 * TODO
-	 Returns the time interval of an event.
-	@return ti - the time interval of an event, which contains the start time and end time.
+	 Returns the start month interval of an event.
+	@return startMonth - the start month 
 	*/
 	public int getStartMonth() {
 		return startMonth;
@@ -126,8 +125,8 @@ public class Event implements Comparable<Event> {
 
 	/**
 	 * TODO
-	 Returns the time interval of an event.
-	@return ti - the time interval of an event, which contains the start time and end time.
+	Returns the end month interval of a recurring event.
+	@return endMonth - the end month 
 	*/
 	public int getEndMonth() {
 		return endMonth;
@@ -135,23 +134,32 @@ public class Event implements Comparable<Event> {
 
 	/**
 	 TODO
-	 Returns the time interval of an event.
-	@return ti - the time interval of an event, which contains the start time and end time.
+	 Returns the year of an event.
+	@return year - the time interval of an event, which contains the start time and end time.
 	*/
 	public int getYear() {
 		return year;
 	}
 
 //	compareTo method - TODO
-	/**
-	Returns an int
-	@param that
-	@return int - 
-	*/
 	@Override
 	public int compareTo(Event that) {
 		// TODO Auto-generated method stub
-		return 0;
+		int dateComp = this.date.compareTo(that.date);
+		int nameComp = this.name.compareTo(that.name);
+		int tiComp = this.ti.compareTo(that.ti);
+		
+		if(dateComp != 0) {
+			 return dateComp;
+		}
+		
+		 else if (tiComp != 0) {
+				return tiComp;
+			}
+		 
+		else {
+			return nameComp;
+		}
 	}
 
 //	Equals TODO
@@ -165,30 +173,21 @@ public class Event implements Comparable<Event> {
 //	Hashcode TODO
 	@Override
 	public int hashCode() {
-		
+		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + date.hashCode() + isRecurring + startMonth + endMonth + year;
 	}
 
 
 	@Override
 	public String toString() {
 		// TODO
-		if(isRecurring==true) {
-			return "Event [name=" + name + ", daysofTheWeek=" + daysofTheWeek + ", date=" + date + ", isRecurring="
-					+ isRecurring + ", startMonth=" + startMonth + ", endMonth=" + endMonth + ", year=" + year + "]";
+		return name + " " + daysofTheWeek + " " + ti;
+		/*if(isRecurring==true) {
+			return name + " " + daysofTheWeek + " " + ti;
 		}
 		else {
 			return "Event [name=" + name + ", daysofTheWeek=" + daysofTheWeek + ", date=" + date + ", isRecurring="
 					+ isRecurring + ", startMonth=" + startMonth + ", endMonth=" + endMonth + ", year=" + year + "]";
 		}
+		*/
 	}
-
-
-
-	
-	
-//	toString
-	
-
-	
-
 }
