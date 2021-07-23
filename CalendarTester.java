@@ -35,6 +35,7 @@ public class CalendarTester {
         LocalDate x = LocalDate.of(cal.getYear(), cal.getMonth(), 1);
 
         CalendarModel calendar = new CalendarModel(cal);
+	NewCalendarModel model = new NewCalendarModel();
 
         JFrame frame = new JFrame();
 
@@ -142,7 +143,7 @@ public class CalendarTester {
     @throws IOException
     @throws UnsupportedOperationException - thrown if any line in the text file doesn't have 7 semicolons
     */
-    public static void parsingEventsToCalendar(File f, CalendarModel model) throws  IOException {
+    public static void parsingEventsToCalendar(File f, NewCalendarModel model) throws  IOException {
     	// check that the file type is a txt file
     	// if not, throw an error
 
