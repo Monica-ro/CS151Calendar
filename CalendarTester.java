@@ -3,7 +3,7 @@ import java.awt.*;
 import java.time.LocalDate;
 
 /**
- * @author Nick Fong
+ * @author Nick Fong, Monica Orme
  *
  */
 
@@ -134,3 +134,65 @@ public class CalendarTester {
 
 
 }
+
+/**
+    Reads a text file that contains recurring events and adds these events to the calendar model.
+    Precondition - the file passed must be a text file
+    @param f - a text file
+    @throws IOException
+    @throws UnsupportedOperationException - thrown if any line in the text file doesn't have 7 semicolons
+    */
+    public static void parsingEventsToCalendar(File f, CalendarModel model) throws  IOException {
+    	// check that the file type is a txt file
+    	// if not, throw an error
+
+    	
+    	// create FileReader and Buffered Reader
+		FileReader fr = new FileReader(f);
+		BufferedReader br = new BufferedReader(fr);
+		
+		// initialize date time formatters
+		//DateTimeFormatter recurringformatter = DateTimeFormatter.ofPattern("E H:m M/d/yy");
+    	//DateTimeFormatter recurringFormatter = DateTimeFormatter.ofPattern("H");
+    	//DateTimeFormatter oneDateFormatter = DateTimeFormatter.ofPattern("M/d/yy");
+		
+    	boolean doneReading = false;
+	   
+   	        while (!doneReading) {
+   	        	String name = br.readLine();
+   	        	
+   	        	if (name == null) {
+   	        		doneReading = true; // break out of the loop
+   				}
+   	        	
+   	        	else {
+   	        		String eventText = br.readLine();
+   	        		// split event info at space
+   	        		String eventInfo[] = eventText.split(";");
+	   	        	if (eventInfo.length!=7) {
+	   	        		throw new UnsupportedOperationException("One of the lines in the file didn't contain 7 semicolons. \n Please reformat your text file. ");
+	   	        	}
+   	        	
+	   	        	// parse event attributes 
+   	        		String eventName = eventInfo[0];
+   	        		int eventYear = Integer.parseInt(eventInfo[1]);
+   	        		int eventStartMonth = Integer.parseInt(eventInfo[2]);
+   	        		int eventEndMonth = Integer.parseInt(eventInfo[3]);
+   	        		String eventDaysOfTheWeek = eventInfo[4];
+   	        		LocalTime eventStartTime = LocalTime.parse(eventInfo[5]);
+   	        		LocalTime eventEndTime = LocalTime.parse(eventInfo[6]);
+	   	        	
+	   	        	// construct an event
+	   	        	// and store it in the calendar model
+	   	        	TimeInterval ti = new TimeInterval(eventStartTime,eventEndTime);
+	   	        	Event event = new Event(eventName, eventYear, eventStartMonth, eventEndMonth, eventDaysOfTheWeek, ti, true);
+	   	        	model.addEvent(event);
+   	        }
+   	        }
+   	        br.close();
+   	        fr.close();
+    	
+
+	        System.out.println("Loading is done!");
+	}
+
