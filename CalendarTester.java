@@ -76,6 +76,52 @@ public class CalendarTester {
         JButton agenda = new JButton("Agenda");
         JButton create = new JButton("Create");
         JButton fromFile = new JButton("From File");
+	    
+	// add action listeners for the view buttons
+        day.addActionListener(updateViewMetric("day",model));
+        week.addActionListener(updateViewMetric("week",model));
+        agenda.addActionListener(updateViewMetric("agenda",model));
+        month.addActionListener(updateViewMetric("month",model));
+        
+        // add action listeners for the create and from file buttons
+        fromFile.addActionListener(event -> {
+        	// specify file path
+        	JFileChooser fileChoice = new JFileChooser();
+		    int returnValue = fileChoice.showOpenDialog(null);
+		    if(returnValue == JFileChooser.APPROVE_OPTION) {
+		       String filePath = fileChoice.getSelectedFile().getAbsolutePath();
+		       // pass the path
+	        	File f = new File(filePath);
+	        	// parse the events from the file
+	        	try {
+					parsingEventsToCalendar(f, model);
+				} catch (IOException e) {
+					System.out.println("An IO Exception occurred. ");
+				}
+	        	catch(UnsupportedOperationException e) {
+	        		e.getMessage();
+	        	}
+		    }
+		    // make button invisible after clicking on it
+		    if(fromFile==(JButton)event.getSource()){
+		    	fromFile.setEnabled(false);
+
+	        }
+        });
+        
+        
+        create.addActionListener(event -> {
+        	// create popup window
+        	// that allows for user entry
+        	
+        	
+        	// pass in data to the model
+        	// if there are no mistakes with it
+        	//model.addEvent(e);
+        	
+        });    
+	    
+	    
         middlePanel.add(day);
         middlePanel.add(week);
         middlePanel.add(month);
@@ -88,6 +134,49 @@ public class CalendarTester {
         JButton today = new JButton("Today");
         JButton back = new JButton("<");
         JButton next = new JButton(">");
+	    
+        // add functionality to the buttons
+        back.addActionListener(event -> {
+        	// check the current metric
+        	String metric = model.getMetric();
+        	// adjust the current date pointer accordingly
+        	if (metric.equalsIgnoreCase("day")) {
+        		model.setHighlightedDate(model.getHighlightedDate().minusDays(1));
+        	}
+        	else if(metric.equalsIgnoreCase("month")) {
+        		model.setHighlightedDate(model.getHighlightedDate().minusMonths(1));
+        	}
+        	else if(metric.equalsIgnoreCase("week")) {
+        		model.setHighlightedDate(model.getHighlightedDate().minusWeeks(1));
+        	}
+        	// TODO: agenda case
+        	else {
+        		model.setHighlightedDate(model.getHighlightedDate().minusDays(4));	
+        	}	
+        });
+        
+        next.addActionListener(event -> {
+        	// check the current metric
+        	String metric = model.getMetric();
+        	// adjust the current date pointer accordingly
+        	if (metric.equalsIgnoreCase("day")) {
+        		model.setHighlightedDate(model.getHighlightedDate().plusDays(1));
+        	}
+        	else if(metric.equalsIgnoreCase("month")) {
+        		model.setHighlightedDate(model.getHighlightedDate().plusMonths(1));
+        	}
+        	else if(metric.equalsIgnoreCase("week")) {
+        		model.setHighlightedDate(model.getHighlightedDate().plusWeeks(1));
+        	}
+        	// TODO: agenda case
+        	else {
+        		model.setHighlightedDate(model.getHighlightedDate().plusDays(4));	
+        	}	
+        });
+        
+	    
+	    
+	
         currentViewButtons.add(today);
         currentViewButtons.add(back);
         currentViewButtons.add(next);
@@ -133,17 +222,7 @@ public class CalendarTester {
         frame.setVisible(true);
     }
 
-
-}
-
-/**
-    Reads a text file that contains recurring events and adds these events to the calendar model.
-    Precondition - the file passed must be a text file
-    @param f - a text file
-    @throws IOException
-    @throws UnsupportedOperationException - thrown if any line in the text file doesn't have 7 semicolons
-    */
-    public static void parsingEventsToCalendar(File f, NewCalendarModel model) throws  IOException {
+	    public static void parsingEventsToCalendar(File f, NewCalendarModel model) throws  IOException {
     	// check that the file type is a txt file
     	// if not, throw an error
 
@@ -151,6 +230,7 @@ public class CalendarTester {
     	// create FileReader and Buffered Reader
 		FileReader fr = new FileReader(f);
 		BufferedReader br = new BufferedReader(fr);
+		DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("H");
 		
 		// initialize date time formatters
 		//DateTimeFormatter recurringformatter = DateTimeFormatter.ofPattern("E H:m M/d/yy");
@@ -175,25 +255,62 @@ public class CalendarTester {
 	   	        	}
    	        	
 	   	        	// parse event attributes 
+	   	        	else {
    	        		String eventName = eventInfo[0];
    	        		int eventYear = Integer.parseInt(eventInfo[1]);
    	        		int eventStartMonth = Integer.parseInt(eventInfo[2]);
    	        		int eventEndMonth = Integer.parseInt(eventInfo[3]);
    	        		String eventDaysOfTheWeek = eventInfo[4];
-   	        		LocalTime eventStartTime = LocalTime.parse(eventInfo[5]);
-   	        		LocalTime eventEndTime = LocalTime.parse(eventInfo[6]);
+   	        		LocalTime eventStartTime = LocalTime.parse(eventInfo[5],dateformatter);
+   	        		LocalTime eventEndTime = LocalTime.parse(eventInfo[6],dateformatter);
 	   	        	
 	   	        	// construct an event
 	   	        	// and store it in the calendar model
 	   	        	TimeInterval ti = new TimeInterval(eventStartTime,eventEndTime);
 	   	        	Event event = new Event(eventName, eventYear, eventStartMonth, eventEndMonth, eventDaysOfTheWeek, ti, true);
 	   	        	model.addEvent(event);
+	   	        	}
+	   	        	
    	        }
    	        }
    	        br.close();
    	        fr.close();
-    	
+   	     System.out.println(model.getData().toString());
+        System.out.println(model.getData().size());
 
 	        System.out.println("Loading is done!");
 	}
+	/**
+    Updates the view metric in the model
+    @param metric - the view metric
+    @param model - the calendar model
+    */
+    public static ActionListener updateViewMetric(String metric,NewCalendarModel model) {
+    	if(metric.equals("day")) {
+    		return event -> {
+    			model.setMetric("day"); 
+    		 };
+    	}
+    	else if(metric.equals("agenda")) {
+    		return event -> {
+    			model.setMetric("agenda"); 
+    		 };
+    	}
+    	else if(metric.equals("month")) {
+    		return event -> {
+    			model.setMetric("month"); 
+    		 };
+    	}
+    	else {
+    		return event -> {
+    			model.setMetric("week"); 
+    		 };
+    	}
+    }
+
+
+	
+}
+
+
 
