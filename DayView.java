@@ -3,12 +3,12 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AgendaView extends JPanel {
-    public AgendaView(LocalDate l) {
+public class DayView extends JPanel {
+    public DayView(LocalDate l) {
         this.setPreferredSize(new Dimension(700, 470));
-        this.setBackground(Color.GRAY);
+        this.setBackground(Color.BLUE);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
-        JLabel date = new JLabel("AGENDA VIEW  " + formatter.format(l).toString());
+        JLabel date = new JLabel("DAY VIEW  " + formatter.format(l).toString());
         this.add(date);
     }
 
