@@ -14,7 +14,7 @@ An MVC based model for the Calendar application
 */
 
 
-public class NewCalendarModel {
+public class CalendarModel {
    // private TreeMap<LocalDate, ArrayList<Event>> events;
     private TreeSet<Event> events;
     private ArrayList<ChangeListener> listeners;
@@ -22,7 +22,7 @@ public class NewCalendarModel {
     private LocalDate highlightedDate;
     private String metric;
 
-    public NewCalendarModel() {
+    public CalendarModel() {
         events = new TreeSet<>();
         listeners = new ArrayList<>();
         this.today = LocalDate.now();
