@@ -222,7 +222,14 @@ public class CalendarTester {
         frame.setVisible(true);
     }
 
-	    public static void parsingEventsToCalendar(File f, NewCalendarModel model) throws  IOException {
+	/**
+	    Reads a text file that contains recurring events and adds these events to the calendar model.
+	    Precondition - the file passed must be a text file
+	    @param f - a text file
+	    @throws IOException
+	    @throws UnsupportedOperationException - thrown if any line in the text file doesn't have 7 semicolons
+	    */
+	  public static void parsingEventsToCalendar(File f, NewCalendarModel model) throws  IOException {
     	// check that the file type is a txt file
     	// if not, throw an error
 
