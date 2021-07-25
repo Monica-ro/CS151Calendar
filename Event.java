@@ -88,7 +88,7 @@ public class Event implements Comparable<Event> {
 	 Returns a boolean that indicates whether an event is recurring or one-time
 	@return isRecurring - a boolean indicating whether an event is recurring or one-time
 	*/
-	public boolean isRecurring() {
+	public boolean getIsRecurring() {
 		return isRecurring;
 	}
 	
@@ -110,6 +110,10 @@ public class Event implements Comparable<Event> {
 	public LocalDate getDate() {
 		if (isRecurring==false) {
 			return date;
+		}
+		
+		else {
+			return null;
 		}
 	}
 
@@ -145,18 +149,14 @@ public class Event implements Comparable<Event> {
 	@Override
 	public int compareTo(Event that) {
 		// TODO Auto-generated method stub
-		int dateComp = this.date.compareTo(that.date);
+		//int dateComp = this.date.compareTo(that.date);
 		int nameComp = this.name.compareTo(that.name);
 		int tiComp = this.ti.compareTo(that.ti);
 		
-		if(dateComp != 0) {
-			 return dateComp;
-		}
+		if (tiComp != 0) {
+			return tiComp;
+		} 
 		
-		 else if (tiComp != 0) {
-				return tiComp;
-			}
-		 
 		else {
 			return nameComp;
 		}
@@ -173,7 +173,7 @@ public class Event implements Comparable<Event> {
 //	Hashcode TODO
 	@Override
 	public int hashCode() {
-		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + date.hashCode() + isRecurring + startMonth + endMonth + year;
+		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + date.hashCode() + startMonth + endMonth + year;
 	}
 
 
