@@ -125,5 +125,25 @@ public class CalendarModel {
 	 public void attach(ChangeListener c) {
 	    listeners.add(c);
 	 }
+	
+	
+	/**
+	* Method that creates an event and adds it to calendar
+	*/
+	public void createEvent(String name, String dayofweek, LocalDate date, boolean recurring)
+	{
+		String textToDisplayString;
+		Event e = new Event(name, dayofweek, date, recurring);
+		if( events.contains(e) ) 
+		{
+			textToDisplayString = "Event conflicts with existing event";
+		} else 
+		{	
+			events.add(e);
+		}
+	}
+	
+	
+	
 }
 
