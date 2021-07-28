@@ -20,6 +20,10 @@ public class CalendarTester {
     public static MonthPanel monthPanel;
     public static JPanel bottomPanel;
     public static JPanel topPanel;
+    static DayView dayViewPanel;
+    static AgendaView agendaViewPanel;
+    static WeekView weekViewPanel;
+    static MonthView monthViewPanel;
 
 
     /**
@@ -50,7 +54,20 @@ public class CalendarTester {
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         final Container contentPane = frame.getContentPane();
         frame.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-
+        
+        // initialize view panels
+        dayViewPanel = new DayView(model);
+        agendaViewPanel = new AgendaView(model);
+        weekViewPanel = new WeekView(model);
+        monthViewPanel = new MonthView(model);
+        //model.attach(returnNewView(model.getMetric(), model.getHighlightedDate());
+        
+        // attach all view panels to the model
+        model.attach(dayViewPanel);
+        model.attach(agendaViewPanel);
+        model.attach(weekViewPanel);
+        model.attach(monthViewPanel);
+        
 
         label = new JLabel("                            " + currentDate.getMonth() + "  " + currentDate
                 .getYear() + "                            ");
