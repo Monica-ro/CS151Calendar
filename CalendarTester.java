@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 /**
- * @author Nick Fong
+ * @author Ben Gonzalez, Monica Orme, Nick Fong
  */
 
 /**
