@@ -1,3 +1,5 @@
+package project;
+
 import java.time.*;
 
 /**
@@ -13,7 +15,7 @@ import java.time.*;
 */
 public class Event implements Comparable<Event> {
 	private String name, daysofTheWeek;
-	private TimeInterval ti;
+	private LocalTime startTime, endTime;
 	private LocalDate date;
 	private boolean isRecurring;
 	private int startMonth, endMonth, year;
@@ -34,13 +36,14 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a recurring event
 	*/
-	public Event(String name, int year, int startMonth, int endMonth, String daysofTheWeek, TimeInterval ti, boolean isRecurring) {
+	public Event(String name, int year, int startMonth, int endMonth, String daysofTheWeek, LocalTime startTime, LocalTime endTime, boolean isRecurring) {
 		this.name = name;
 		this.year = year;
 		this.startMonth = startMonth;
 		this.endMonth = endMonth;
 		this.daysofTheWeek = daysofTheWeek;
-		this.ti = ti;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		//this.date = date;
 		this.isRecurring = true;
 		
@@ -53,12 +56,13 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a one-time event
 	*/
-	public Event(String name, String daysofTheWeek, TimeInterval ti, LocalDate date, boolean isRecurring) {
+	public Event(String name, String daysofTheWeek, LocalTime startTime, LocalTime endTime, LocalDate date, boolean isRecurring) {
 		//TODO - need to figure out way to convert int day of week to String, may need an array or method
 		// same for start month and end month
 		this.name = name;
 		this.daysofTheWeek = daysofTheWeek;
-		this.ti = ti;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.date = date;
 		this.isRecurring = false;
 		this.startMonth = date.getMonthValue();
@@ -75,14 +79,7 @@ public class Event implements Comparable<Event> {
 	public String getName() {
 		return name;
 	}
-	
-	/**
-	 Returns the time interval of an event.
-	@return ti - the time interval of an event, which contains the start time and end time.
-	*/
-	public TimeInterval getTi() {
-		return ti;
-	}
+
 	
 	/**
 	 Returns a boolean that indicates whether an event is recurring or one-time
@@ -151,12 +148,15 @@ public class Event implements Comparable<Event> {
 		// TODO Auto-generated method stub
 		//int dateComp = this.date.compareTo(that.date);
 		int nameComp = this.name.compareTo(that.name);
-		int tiComp = this.ti.compareTo(that.ti);
+		int startTimeComp = this.startTime.compareTo(that.startTime);
+		int endTimeComp = this.endTime.compareTo(that.endTime);
 		
-		if (tiComp != 0) {
-			return tiComp;
+		if (startTimeComp != 0) {
+			return startTimeComp;
 		} 
-		
+		if (endTimeComp != 0) {
+			return endTimeComp;
+		}
 		else {
 			return nameComp;
 		}
@@ -173,14 +173,14 @@ public class Event implements Comparable<Event> {
 //	Hashcode TODO
 	@Override
 	public int hashCode() {
-		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + date.hashCode() + startMonth + endMonth + year;
+		return name.hashCode() + daysofTheWeek.hashCode() + startTime.hashCode() + endTime.hashCode() + date.hashCode() + startMonth + endMonth + year;
 	}
 
 
 	@Override
 	public String toString() {
 		// TODO
-		return name + " " + daysofTheWeek + " " + ti;
+		return name + " " + daysofTheWeek + " " + startTime + endTime;
 		/*if(isRecurring==true) {
 			return name + " " + daysofTheWeek + " " + ti;
 		}
@@ -189,5 +189,25 @@ public class Event implements Comparable<Event> {
 					+ isRecurring + ", startMonth=" + startMonth + ", endMonth=" + endMonth + ", year=" + year + "]";
 		}
 		*/
+	}
+
+
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 }
