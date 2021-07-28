@@ -323,6 +323,23 @@ public class CalendarTester {
 //
 //        return null;
 //    }
+    
+    public static JPanel returnNewViewPanel (String metric, CalendarModel model) {
+    	if(metric.equals("day")) {
+    		return dayViewPanel;
+    	}
+    	else if(metric.equals("agenda")) {
+    		return agendaViewPanel;
+    	}
+    	else if(metric.equals("week")) {
+    		return weekViewPanel;
+    	}
+    	else {
+    		return monthViewPanel;
+    	}
+    	
+    	}
+    } // close tester
 
 }
 
