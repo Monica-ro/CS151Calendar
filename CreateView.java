@@ -1,15 +1,186 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
-public class CreateView extends JPanel {
-    public CreateView(CalendarModel model) {
-        this.setPreferredSize(new Dimension(700, 470));
-        this.setBackground(Color.PINK);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
-        JLabel date = new JLabel("CREATE VIEW  " + formatter.format(model.getHighlightedDate()).toString());
-        this.add(date);
+public class CreateView extends JPanel implements ChangeListener, ActionListener {
+	
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private String viewMetric;
+	private CalendarModel model;
+	private LocalDate highlightedDate;
+	JTextArea events;
+	JTextField eventName, weekDay, startTime, endTime, eventDate;
+	
+	
+    CreateView(CalendarModel calModel) {
+		this.model = calModel;
+		this.viewMetric = "create";
+		this.highlightedDate = calModel.getHighlightedDate();
+		returnView();
+		
+	}
+    
+    public CreateView(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.viewMetric = "create";
     }
+    
+    
+    public void returnView() {
+    	this.removeAll();
+    	
+    	//Primary Panel
+    	this.setLayout(new GridLayout(9, 1));
+    	this.setPreferredSize(new Dimension(700, 470));
+    	this.setBackground(Color.PINK);
+    	
+    	//Title of View and Current Date Section
+    	JPanel dateholderPanel = new JPanel();
+    	dateholderPanel.setBackground(Color.PINK);
+    	this.add(dateholderPanel);
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
+    	JLabel date = new JLabel("CREATE VIEW  " + formatter.format(model.getHighlightedDate()).toString());
+    	this.add(date);
+    	
+    	//Name of Event Section
+    	JPanel nameOfEventPanel = new JPanel();
+    	nameOfEventPanel.setBackground(Color.PINK);
+    	this.add(nameOfEventPanel);    	
+    	JLabel nameLabel = new JLabel();
+    	nameLabel.setText("Name of Event : ");
+    	nameOfEventPanel.add(nameLabel);
+    	JTextField nameOfEventTextField = new JTextField();
+    	nameOfEventTextField.setPreferredSize(new Dimension(250, 40));
+    	eventName = nameOfEventTextField;
+    	nameOfEventPanel.add(nameOfEventTextField);
+    	
+	    //StartTime of Event Section
+		JPanel startTimePanel = new JPanel();
+		startTimePanel.setBackground(Color.PINK);
+	    this.add(startTimePanel);
+	    JLabel startTimeLabel = new JLabel();
+	    startTimeLabel.setText("StartTime of Event (00:00) : ");
+	    startTimePanel.add(startTimeLabel);
+	    JTextField startTimeTextField = new JTextField();
+	    startTimeTextField.setPreferredSize(new Dimension(250, 40));
+	    startTime = startTimeTextField;
+	    startTimePanel.add(startTimeTextField);
+	    
+	    //EndTime of Event Section
+	    JPanel endTimePanel = new JPanel();
+	    endTimePanel.setBackground(Color.PINK);
+	    this.add(endTimePanel);
+	    JLabel endTimeLabel = new JLabel();
+	    endTimeLabel.setText("EndTime of Event (00:00) : ");
+	    endTimePanel.add(endTimeLabel);
+	    JTextField endTimeTextField = new JTextField();
+	    endTimeTextField.setPreferredSize(new Dimension(250, 40));
+	    endTime = endTimeTextField;
+	    endTimePanel.add(endTimeTextField);
+	    
+	    //Day of the Week Section
+	    JPanel dayofweekPanel = new JPanel();
+	    dayofweekPanel.setBackground(Color.PINK);
+	    this.add(dayofweekPanel);
+	    JLabel dayofweekLabel = new JLabel();
+	    dayofweekLabel.setText("Day of Week : ");
+	    dayofweekPanel.add(dayofweekLabel);
+	    JTextField dayofweekRequest = new JTextField();
+	    dayofweekRequest.setPreferredSize(new Dimension(250, 40));
+	    weekDay = dayofweekRequest;
+	    dayofweekPanel.add(dayofweekRequest);
+	    
+    	//Date of Event Section
+	    JPanel dateOfEventPanel = new JPanel();
+	    dateOfEventPanel.setBackground(Color.PINK);
+	    this.add(dateOfEventPanel);
+	    JLabel dateOfEventLabel = new JLabel();
+	    dateOfEventLabel.setText("Date of Event (YYYY-MM-dd) : ");
+	    dateOfEventPanel.add(dateOfEventLabel);
+	    JTextField dateOFEventTextField = new JTextField();
+	    dateOFEventTextField.setPreferredSize(new Dimension(250, 40));
+	    eventDate = dateOFEventTextField;
+	    dateOfEventPanel.add(dateOFEventTextField);
+    	
+	    //Submit Button Section
+	    JPanel submitPanel = new JPanel();
+	    submitPanel.setBackground(Color.PINK);
+	    this.add(submitPanel);
+	    JButton submitBtn = new JButton("Create Event");
+	    submitBtn.setBounds(10, 80, 80 ,25);
+	    submitBtn.addActionListener(this);
+	    submitPanel.add(submitBtn);
+	    
+	}
+    
+    
+    public ArrayList<Event> createEvents(CalendarModel model) {
+        // loop through events in the model
+        // and determine which events fit the criteria
+        // then return those events
 
+        ArrayList<Event> createEvents = new ArrayList<>();
+        for (Event e : model.getData()) {
+            if (e.getDate().isAfter(startDate) && e.getDate().isBefore(endDate) || e.getDate().equals(startDate) || e.getDate().equals(endDate)) {
+                createEvents.add(e);
+            }
+        }
+        return createEvents;
+    }
+    
+
+    
+    @Override
+    public void stateChanged(ChangeEvent e) {
+
+    	// display contents
+    			// if the model's
+    			// view metric matches with this one
+    			if (model.getMetric().equalsIgnoreCase(viewMetric)) {
+    				returnView();
+    				System.out.println("This is the create view");
+    			}
+    			else {
+    				// don't display anything
+    			}
+    			
+    			
+    }
+    
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		//eventName, weekDay, startTime, endTime, eventDate
+		String name = eventName.getText();
+		String dayOfWeek = weekDay.getText();
+		String start = startTime.getText();
+		String end = endTime.getText();
+		String date = eventDate.getText();
+		
+		DateTimeFormatter timeformat = DateTimeFormatter.ofPattern("HH:mm");
+		LocalTime starttime = LocalTime.parse(start, timeformat);
+		LocalTime endtime = LocalTime.parse(end, timeformat);
+		LocalDate day = LocalDate.parse(date);
+		
+		Event event = new Event(name, dayOfWeek, starttime, endtime, day);
+		model.addEvent(event);
+		System.out.println("Event was Created");
+		System.out.println(model.format(model.getData())); //prints the added event
+		
+	}
+
+	public String getViewMetric() {
+        return viewMetric;
+    }
 
 }
