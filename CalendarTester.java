@@ -229,6 +229,49 @@ public class CalendarTester {
         JButton today = new JButton("Today");
         JButton back = new JButton("<");
         JButton next = new JButton(">");
+	    
+	// add functionality to the buttons
+        back.addActionListener(event -> {
+        	// check the current metric
+        	String metric = calModel.getMetric();
+        	// adjust the current date pointer accordingly
+        	if (metric.equalsIgnoreCase("day")) {
+        		calModel.setHighlightedDate(calModel.getHighlightedDate().minusDays(1));
+        	}
+        	else if(metric.equalsIgnoreCase("month")) {
+        		calModel.setHighlightedDate(calModel.getHighlightedDate().minusMonths(1));
+        	}
+        	else if(metric.equalsIgnoreCase("week")) {
+        		calModel.setHighlightedDate(calModel.getHighlightedDate().minusWeeks(1));
+        	}
+        	else {
+        			
+        	}	
+        });
+        
+        next.addActionListener(event -> {
+        	// check the current metric
+        	String metric = calModel.getMetric();
+        	// adjust the current date pointer accordingly
+        	if (metric.equalsIgnoreCase("day")) {
+        		calModel.setHighlightedDate(calModel.getHighlightedDate().plusDays(1));
+        	}
+        	else if(metric.equalsIgnoreCase("month")) {
+        		calModel.setHighlightedDate(calModel.getHighlightedDate().plusMonths(1));
+        	}
+        	else if(metric.equalsIgnoreCase("week")) {
+        		calModel.setHighlightedDate(calModel.getHighlightedDate().plusWeeks(1));
+        	}
+        	else {
+        			
+        	}	
+        });
+	    today.addActionListener(event -> {
+		    // change the highlighted date to the today's date
+		    calModel.setHighlightedDate(calModel.getToday());
+        	
+        });
+	    
         currentViewButtons.add(today);
         currentViewButtons.add(back);
         currentViewButtons.add(next);
