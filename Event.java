@@ -53,7 +53,7 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a one-time event
 	*/
-	public Event(String name, String daysofTheWeek, LocalTime startTime, LocalTime endTime, LocalDate date, boolean isRecurring) {
+	public Event(String name, String daysofTheWeek, LocalTime startTime, LocalTime endTime, LocalDate date) {
 		//TODO - need to figure out way to convert int day of week to String, may need an array or method
 		// same for start month and end month
 		this.name = name;
@@ -161,7 +161,7 @@ public class Event implements Comparable<Event> {
 			return name + " " + daysofTheWeek + " " + startDate + "-"  + endDate + "   "+ startTime + "-" + endTime;
 		}
 		else {
-			return name + " " + daysofTheWeek + " " + startTime + endTime;
+			return name + " " + daysofTheWeek + " " + startTime +" - "+ endTime + " " + startDate;
 		}
 		
 	}
