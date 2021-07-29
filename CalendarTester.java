@@ -26,7 +26,8 @@ public class CalendarTester {
     static DayView dayViewPanel;
     static AgendaView agendaViewPanel;
     static WeekView weekViewPanel;
-    static MonthView monthViewPanel;
+    static MonthView monthViewPanel; 
+    static CreateView createViewPanel;
 
 
     /**
@@ -63,12 +64,14 @@ public class CalendarTester {
         agendaViewPanel = new AgendaView(calModel);
         weekViewPanel = new WeekView(calModel);
         monthViewPanel = new MonthView(calModel);
+	createViewPanel = new CreateView(calModel);
 
         // attach all view panels to the model
         calModel.attach(dayViewPanel);
         calModel.attach(agendaViewPanel);
         calModel.attach(weekViewPanel);
         calModel.attach(monthViewPanel);
+	calModel.attach(createViewPanel);
 
 
         label = new JLabel("                            " + currentDate.getMonth() + "  " + currentDate
@@ -188,7 +191,15 @@ public class CalendarTester {
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ben's code goes here
+		   
+		    bottomPanel.removeAll();
+		    calModel.setMetric("create");
+		    bottomPanel.add(createViewPanel, BorderLayout.CENTER);
+		    bottomPanel.revalidate();
+		    bottomPanel.repaint();
+		    
+		    System.out.println(calModel.getMetric());
+		    
             }
         });
         JButton fromFile = new JButton("From File");
