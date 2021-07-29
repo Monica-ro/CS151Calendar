@@ -1,8 +1,11 @@
+package project;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.awt.event.*;
+import java.io.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Ben Gonzalez, Monica Orme, Nick Fong
@@ -60,7 +63,6 @@ public class CalendarTester {
         agendaViewPanel = new AgendaView(calModel);
         weekViewPanel = new WeekView(calModel);
         monthViewPanel = new MonthView(calModel);
-        //model.attach(returnNewView(model.getMetric(), model.getHighlightedDate());
 
         // attach all view panels to the model
         calModel.attach(dayViewPanel);
@@ -124,36 +126,34 @@ public class CalendarTester {
 
 
         bottomPanel = new JPanel();
-        bottomPanel.add(new DayView(calModel));
 
 
         JButton day = new JButton("Day");
         day.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calModel.setMetric("day");
-                bottomPanel.removeAll();
-                bottomPanel.add(new DayView(calModel));
-                bottomPanel.revalidate();
-                System.out.println(calModel.getMetric());
+            	
+            	bottomPanel.removeAll();
+            	calModel.setMetric("day");
+    			bottomPanel.add(dayViewPanel,BorderLayout.CENTER);
+    			bottomPanel.revalidate();
+    			bottomPanel.repaint();
+    			
+    			System.out.println(calModel.getMetric());
             }
         });
-
-
-//        week.addActionListener(updateViewMetric("week", model));
-//        agenda.addActionListener(updateViewMetric("agenda", model));
-//        month.addActionListener(updateViewMetric("month", model));
-
 
         JButton week = new JButton("Week");
         week.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calModel.setMetric("week");
-                bottomPanel.removeAll();
-                bottomPanel.add(new WeekView(calModel));
-                bottomPanel.revalidate();
-                System.out.println(calModel.getMetric());
+            	bottomPanel.removeAll();
+            	calModel.setMetric("week");
+    			bottomPanel.add(weekViewPanel,BorderLayout.CENTER);
+    			bottomPanel.revalidate();
+    			bottomPanel.repaint();
+    			
+    			System.out.println(calModel.getMetric());
             }
         });
 
@@ -161,11 +161,13 @@ public class CalendarTester {
         month.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calModel.setMetric("month");
-                bottomPanel.removeAll();
-                bottomPanel.add(new MonthView(calModel));
-                bottomPanel.revalidate();
-                System.out.println(calModel.getMetric());
+            	calModel.setMetric("month");
+            	bottomPanel.removeAll();
+    			bottomPanel.add(monthViewPanel,BorderLayout.CENTER);
+    			bottomPanel.revalidate();
+    			bottomPanel.repaint();
+    			
+    			System.out.println(calModel.getMetric());
             }
         });
 
@@ -173,25 +175,49 @@ public class CalendarTester {
         agenda.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calModel.setMetric("agenda");
-                bottomPanel.removeAll();
-                bottomPanel.add(new AgendaView(calModel));
-                bottomPanel.revalidate();
-                System.out.println(calModel.getMetric());
+            	bottomPanel.removeAll();
+            	calModel.setMetric("agenda");
+    			bottomPanel.add(agendaViewPanel,BorderLayout.CENTER);
+    			bottomPanel.revalidate();
+    			bottomPanel.repaint();
+    			
+    			System.out.println(calModel.getMetric());
             }
         });
         JButton create = new JButton("Create");
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calModel.setMetric("agenda");
-                bottomPanel.removeAll();
-                bottomPanel.add(new CreateView(calModel));
-                bottomPanel.revalidate();
-                System.out.println(calModel.getMetric());
+                // Ben's code goes here
             }
         });
         JButton fromFile = new JButton("From File");
+        fromFile.addActionListener(event -> {
+        	// specify file path
+        	JFileChooser fileChoice = new JFileChooser();
+		    int returnValue = fileChoice.showOpenDialog(null);
+		    if(returnValue == JFileChooser.APPROVE_OPTION) {
+		       String filePath = fileChoice.getSelectedFile().getAbsolutePath();
+		       // pass the path
+	        	File f = new File(filePath);
+	        	// parse the events from the file
+	        	try {
+					parsingEventsToCalendar(f, calModel);
+				} catch (IOException e) {
+					System.out.println("An IO Exception occurred. ");
+				}
+	        	catch(UnsupportedOperationException e) {
+	        		e.getMessage();
+	        	}
+		    }
+		    // make button invisible after clicking on it
+		    if(fromFile==(JButton)event.getSource()){
+		    	fromFile.setEnabled(false);
+
+	        }
+        });
+        
+        
         viewButtons.add(day);
         viewButtons.add(week);
         viewButtons.add(month);
@@ -226,135 +252,73 @@ public class CalendarTester {
      @throws IOException
      @throws UnsupportedOperationException - thrown if any line in the text file doesn't have 7 semicolons
      */
-//    public static void parsingEventsToCalendar(File f, CalendarModel model) throws IOException {
-//        // check that the file type is a txt file
-//        // if not, throw an error
-//
-//
-//        // create FileReader and Buffered Reader
-//        FileReader fr = new FileReader(f);
-//        BufferedReader br = new BufferedReader(fr);
-//        DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("H");
-//
-//        // initialize date time formatters
-//        //DateTimeFormatter recurringformatter = DateTimeFormatter.ofPattern("E H:m M/d/yy");
-//        //DateTimeFormatter recurringFormatter = DateTimeFormatter.ofPattern("H");
-//        //DateTimeFormatter oneDateFormatter = DateTimeFormatter.ofPattern("M/d/yy");
-//
-//        boolean doneReading = false;
-//
-//        while (!doneReading) {
-//            String name = br.readLine();
-//
-//            if (name == null) {
-//                doneReading = true; // break out of the loop
-//            }
-//
-//            else {
-//                String eventText = br.readLine();
-//                // split event info at space
-//                String eventInfo[] = eventText.split(";");
-//                if (eventInfo.length!=7) {
-//                    throw new UnsupportedOperationException("One of the lines in the file didn't contain 7 semicolons. \n Please reformat your text file. ");
-//                }
-//
-//                // parse event attributes
-//                else {
-//                    String eventName = eventInfo[0];
-//                    int eventYear = Integer.parseInt(eventInfo[1]);
-//                    int eventStartMonth = Integer.parseInt(eventInfo[2]);
-//                    int eventEndMonth = Integer.parseInt(eventInfo[3]);
-//                    String eventDaysOfTheWeek = eventInfo[4];
-//                    LocalTime eventStartTime = LocalTime.parse(eventInfo[5],dateformatter);
-//                    LocalTime eventEndTime = LocalTime.parse(eventInfo[6],dateformatter);
-//
-//                    // construct an event
-//                    // and store it in the calendar model
-//                    TimeInterval ti = new TimeInterval(eventStartTime,eventEndTime);
-//                    Event event = new Event(eventName, eventYear, eventStartMonth, eventEndMonth, eventDaysOfTheWeek, ti, true);
-//                    model.addEvent(event);
-//                }
-//
-//            }
-//        }
-//        br.close();
-//        fr.close();
-//        System.out.println(model.getData().toString());
-//        System.out.println(model.getData().size());
-//
-//        System.out.println("Loading is done!");
-//    }
+    public static void parsingEventsToCalendar(File f, CalendarModel model) throws  IOException {
+    	// check that the file type is a txt file
+    	// if not, throw an error
 
-    /**
-     * Updates the view metric in the model
-     *
-     * @param metric - the view metric
-     * @param model  - the calendar model
-     */
-    public static ActionListener updateViewMetric(String metric, CalendarModel model) {
-        if (metric.equals("day")) {
-            return event -> {
-                model.setMetric("day");
-            };
-        }
-        else if (metric.equals("agenda")) {
-            return event -> {
-                model.setMetric("agenda");
-            };
-        }
-        else if (metric.equals("month")) {
-            return event -> {
-                model.setMetric("month");
-            };
-        }
-        else {
-            return event -> {
-                model.setMetric("week");
-            };
-        }
-    }
+    	
+    	// create FileReader and Buffered Reader
+		FileReader fr = new FileReader(f);
+		BufferedReader br = new BufferedReader(fr);
+		DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("H");
+		DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+		
+		// initialize date time formatters
+		//DateTimeFormatter recurringformatter = DateTimeFormatter.ofPattern("E H:m M/d/yy");
+    	//DateTimeFormatter recurringFormatter = DateTimeFormatter.ofPattern("H");
+    	//DateTimeFormatter oneDateFormatter = DateTimeFormatter.ofPattern("M/d/yy");
+		
+    	boolean doneReading = false;
+	   
+   	        while (!doneReading) {
+   	        	String name = br.readLine();
+   	        	
+   	        	if (name == null) {
+   	        		doneReading = true; // break out of the loop
+   				}
+   	        	
+   	        	else {
+   	        		String eventText = br.readLine();
+   	        		// split event info at space
+   	        		String eventInfo[] = eventText.split(";");
+	   	        	if (eventInfo.length!=7) {
+	   	        		throw new UnsupportedOperationException("One of the lines in the file didn't contain 7 semicolons. \n Please reformat your text file. ");
+	   	        	}
+   	        	
+	   	        	// parse event attributes 
+	   	        	else {
+   	        		String eventName = eventInfo[0];
+   	        		String eventYear = eventInfo[1];
+   	        		String eventStartMonth = eventInfo[2];
+   	        		String eventEndMonth = eventInfo[3];
+   	        		String eventDaysOfTheWeek = eventInfo[4];
+   	        		LocalTime eventStartTime = LocalTime.parse(eventInfo[5],timeformatter);
+   	        		LocalTime eventEndTime = LocalTime.parse(eventInfo[6],timeformatter);
+   	        		
+   	        		String eventStartDate = eventStartMonth+"/"+  "1" +  "/" +eventYear;
+   	        		String eventEndDate = eventEndMonth+"/"+  "1" +  "/" +eventYear;
+   	        		
+   	        		LocalDate startDate = LocalDate.parse(eventStartDate,dateformatter);
+   	        		LocalDate endDate = LocalDate.parse(eventEndDate,dateformatter);
+   	        		
+	   	        	// construct an event
+	   	        	// and store it in the calendar model
+	   	        	//TimeInterval ti = new TimeInterval(eventStartTime,eventEndTime);
+	   	        	
+   	        		// String name, LocalDate startDate, LocalDate endDate, String daysofTheWeek, LocalTime startTime, LocalTime endTime, boolean isRecurring
+   	        		Event event = new Event(eventName, startDate, endDate, eventDaysOfTheWeek,eventStartTime, eventEndTime, true);
+	   	        	model.addEvent(event);
+	   	        	}
+	   	        	
+   	        }
+   	        }
+   	        br.close();
+   	        fr.close();
+   	     System.out.println(model.getData().toString());
+        System.out.println("Number of events: "+model.getData().size());
 
-//    /**
-//     * Returns the view that has been specified by the user, which has been captured by the current view metric in the model.
-//     *
-//     * @param metric - the view metric that is given by the model
-//     * @return ChangeListener - gives the user-specified view
-//     */
-//    public static ChangeListener returnNewView(String metric, LocalDate highlightedDate) {
-//        if (metric.equals("day")) {
-//
-//            bottomPanel.removeAll();
-//            bottomPanel.add(new DayView(highlightedDate));
-//            bottomPanel.revalidate();
-//            return new DayView(highlightedDate);
-//        }
-//        else if(metric.equals("agenda")) {
-//            return new AgendaView(highlightedDate);
-//        }
-//        else if(metric.equals("week")) {
-//            return new WeekView(highlightedDate);
-//        }
-//        else if(metric.equals("view")) {
-//            return new MonthView(highlightedDate);
-//        }
-//
-//        return null;
-//    }
-
-    public static JPanel returnNewViewPanel(String metric, CalendarModel model) {
-        if (metric.equals("day")) {
-            return dayViewPanel;
-        }
-        else if (metric.equals("agenda")) {
-            return agendaViewPanel;
-        }
-        else if (metric.equals("week")) {
-            return weekViewPanel;
-        }
-        else {
-            return monthViewPanel;
-        }
-
-    }
+	        System.out.println("Loading is done!");
+	}
 } // close tester
+
 
