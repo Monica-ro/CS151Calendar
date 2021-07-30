@@ -171,10 +171,10 @@ public class Event implements Comparable<Event> {
 	@Override
 	public String toString() {
 		if(isRecurring==true) {
-			return name + " " + daysofTheWeek + " " + startDate + "-"  + endDate + "   "+ startTime + "-" + endTime;
+			return "Event: " + name + " " + daysofTheWeek + " " + startTime + "-" + endTime;
 		}
 		else {
-			return name + " " + daysofTheWeek + " " + startTime + endTime;
+			return "Event: " + name + "  " + daysofTheWeek + " " + startTime + "-" +endTime;
 		}
 		
 	}
