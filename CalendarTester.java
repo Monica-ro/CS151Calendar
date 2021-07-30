@@ -1,5 +1,3 @@
-package project;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -149,6 +147,7 @@ public class CalendarTester {
 
 
         bottomPanel = new JPanel();
+	bottomPanel.add(dayViewPanel, BorderLayout.CENTER);
 
 
         JButton day = new JButton("Day");
