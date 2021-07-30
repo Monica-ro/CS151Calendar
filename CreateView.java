@@ -44,12 +44,13 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     	this.setPreferredSize(new Dimension(700, 470));
     	this.setBackground(Color.PINK);
     	
-    	//Title of View and Current Date Section
+    	//Title of View and Highlighted Date Section
     	JPanel dateholderPanel = new JPanel();
     	dateholderPanel.setBackground(Color.PINK);
     	this.add(dateholderPanel);
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
     	JLabel date = new JLabel("CREATE VIEW  " + formatter.format(model.getHighlightedDate()).toString());
+    	highlightedDate =  LocalDate.parse(formatter.format(model.getHighlightedDate()).toString(), formatter);
     	this.add(date);
     	
     	//Name of Event Section
@@ -88,18 +89,6 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 	    endTime = endTimeTextField;
 	    endTimePanel.add(endTimeTextField);
 	    
-    	//Date of Event Section
-	    JPanel dateOfEventPanel = new JPanel();
-	    dateOfEventPanel.setBackground(Color.PINK);
-	    this.add(dateOfEventPanel);
-	    JLabel dateOfEventLabel = new JLabel();
-	    dateOfEventLabel.setText("Date of Event (YYYY-MM-dd) : ");
-	    dateOfEventPanel.add(dateOfEventLabel);
-	    JTextField dateOFEventTextField = new JTextField();
-	    dateOFEventTextField.setPreferredSize(new Dimension(250, 40));
-	    eventDate = dateOFEventTextField;
-	    dateOfEventPanel.add(dateOFEventTextField);
-    	
 	    //Submit Button Section
 	    JPanel submitPanel = new JPanel();
 	    submitPanel.setBackground(Color.PINK);
@@ -153,15 +142,31 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 		String name = eventName.getText();
 		String start = startTime.getText();
 		String end = endTime.getText();
-		String date = eventDate.getText();
+		
+		//parse hr and min to check time
+		String starthr = start.substring(0, 2);
+		String startmin = start.substring(3, 5);
+		String endhr = end.substring(0, 2);
+		String endmin = end.substring(3, 5);
+		
+		//convert to int
+		int sHr = Integer.parseInt(starthr);
+		int sMin = Integer.parseInt(startmin);
+		int eHr = Integer.parseInt(endhr);
+		int eMin = Integer.parseInt(endmin);
+		
+		if( sHr>23 || sMin>59 || eHr>23 || sMin>59)
+		{
+			System.out.println("Invalid time. Please input correct time");
+			return;
+		}
 		
 		DateTimeFormatter timeformat = DateTimeFormatter.ofPattern("HH:mm");
 		LocalTime starttime = LocalTime.parse(start, timeformat);
-		LocalTime endtime = LocalTime.parse(end, timeformat);
-		LocalDate day = LocalDate.parse(date);
-		DayOfWeek dow = DayOfWeek.from(day);
+		LocalTime endtime = LocalTime.parse(end, timeformat);		
+		DayOfWeek dow = DayOfWeek.from(highlightedDate);
 		
-		Event event = new Event(name, dow.name(), starttime, endtime, day);
+		Event event = new Event(name, dow.name(), starttime, endtime, highlightedDate);
 		model.addEvent(event);
 		System.out.println("Event was Created");
 		System.out.println(model.format(model.getData())); //prints the added event
