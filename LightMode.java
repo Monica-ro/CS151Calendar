@@ -1,10 +1,9 @@
 /**
- * 
+ *
  */
-package project;
 
-import java.awt.Color;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -13,16 +12,16 @@ import javax.swing.JPanel;
  */
 public class LightMode implements ColorModeStrategy {
 
-	@Override
-	public Color updateBackground() {
-		return Color.lightGray;
-	}
-	
-	@Override
-	public JPanel updatePanelTheme(JPanel original) {
-		JPanel newPanel = original;
-		newPanel.setBackground(updateBackground());
-		return newPanel;
-	}
-	
+    @Override
+    public Color updateBackground() {
+        return Color.lightGray;
+    }
+
+    @Override
+    public JPanel updatePanelTheme(JPanel original) {
+        JPanel newPanel = original;
+        newPanel.setBackground(updateBackground());
+        return newPanel;
+    }
+
 }
