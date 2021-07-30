@@ -3,7 +3,7 @@ import java.time.*;
 /**
 * 
 * @author Monica Orme
-* @version 1.0 7/21/21
+* @version 1.0 7/29/21
 */
 
 
@@ -53,7 +53,7 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a one-time event
 	*/
-	public Event(String name, String daysofTheWeek, LocalTime startTime, LocalTime endTime, LocalDate date) {
+	public Event(String name, String daysofTheWeek, LocalTime startTime, LocalTime endTime, LocalDate date, boolean isRecurring) {
 		//TODO - need to figure out way to convert int day of week to String, may need an array or method
 		// same for start month and end month
 		this.name = name;
@@ -128,18 +128,31 @@ public class Event implements Comparable<Event> {
 	@Override
 	public int compareTo(Event that) {
 		int nameComp = this.name.compareTo(that.name);
+		int daysComp = this.daysofTheWeek.compareTo(that.daysofTheWeek);
+		int startDateComp = this.startDate.compareTo(that.startDate);
+		int endDateComp = this.endDate.compareTo(that.endDate);
 		int startTimeComp = this.startTime.compareTo(that.startTime);
 		int endTimeComp = this.endTime.compareTo(that.endTime);
 		
-		if (startTimeComp != 0) {
-			return startTimeComp;
+		if (startDateComp != 0) {
+			return startDateComp;
 		} 
-		if (endTimeComp != 0) {
+		else if (endDateComp != 0) {
+			return endDateComp;
+		}
+		else if (startTimeComp != 0) {
+			return startTimeComp;
+		}
+		else if (endTimeComp != 0) {
 			return endTimeComp;
 		}
-		else {
+		else if (daysComp != 0) {
+			return daysComp;
+		} 
+		else  {
 			return nameComp;
 		}
+		
 	}
 
 	@Override
@@ -161,7 +174,7 @@ public class Event implements Comparable<Event> {
 			return name + " " + daysofTheWeek + " " + startDate + "-"  + endDate + "   "+ startTime + "-" + endTime;
 		}
 		else {
-			return name + " " + daysofTheWeek + " " + startTime +" - "+ endTime + " " + startDate;
+			return name + " " + daysofTheWeek + " " + startTime + endTime;
 		}
 		
 	}
@@ -173,10 +186,5 @@ public class Event implements Comparable<Event> {
 
 	public LocalTime getEndTime() {
 		return endTime;
-	}
-
-
-
-
-	
+	}	
 }
