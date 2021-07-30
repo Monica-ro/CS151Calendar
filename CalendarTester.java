@@ -363,16 +363,15 @@ public class CalendarTester {
         boolean doneReading = false;
 
         while (!doneReading) {
-            String name = br.readLine();
+            String line = br.readLine();
 
-            if (name == null) {
+            if (line == null) {
                 doneReading = true; // break out of the loop
             }
 
             else {
-                String eventText = br.readLine();
                 // split event info at space
-                String eventInfo[] = eventText.split(";");
+                String eventInfo[] = line.split(";");
                 if (eventInfo.length != 7) {
                     throw new UnsupportedOperationException("One of the lines in the file didn't contain 7 semicolons. \n Please reformat your text file. ");
                 }
