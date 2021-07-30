@@ -30,7 +30,7 @@ public class WeekView extends JPanel implements ChangeListener {
 		this.revalidate();
 		this.setLayout(new BorderLayout());
 		
-		this.setPreferredSize(new Dimension(700, 470));
+		this.setPreferredSize(new Dimension(700, 457));
 		this.setBackground(Color.YELLOW);
 		
 		// panel display methods 
