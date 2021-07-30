@@ -22,18 +22,13 @@ public interface ColorModeStrategy {
 	public Color updateBackground();
 	
 	/**
-	 @return JPanel - a JPanel with a new theme
+	 Updates the color mode of the panel theme
+	 
+	 @param original - the original JPanel
+	 @return JPanel - a Jpanel with an updated background color
 	 */
-	public JPanel updateTopPanelTheme();
+	public JPanel  updatePanelTheme(JPanel original);
 	
-	/**
-	 @return JPanel - a JPanel with a new theme
-	 */
-	public JPanel updateBottomPanelTheme(JPanel original);
-
-	/**
-	 * @return
-	 */
 
 
 }

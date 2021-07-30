@@ -12,25 +12,25 @@ import javax.swing.JPanel;
  */
 public class DarkMode implements ColorModeStrategy {
 
+	//JPanel original;
+	
+	DarkMode() {
+		//this.original = originalPanel;
+	}
+	
 	@Override
 	public Color updateBackground() {
-		return Color.black;
+		return Color.darkGray;
 	}
 
 	@Override
-	public JPanel updateTopPanelTheme() {
-		JPanel topPanel = new JPanel();
-		topPanel.setBackground(updateBackground());
+	public JPanel updatePanelTheme(JPanel original) {
+		JPanel newPanel = original;
+		newPanel.setBackground(updateBackground());
 		
-		return topPanel;
+		return newPanel;
 	}
 
-	@Override
-	public JPanel updateBottomPanelTheme(JPanel original) {
-		JPanel bottomPanel = original;
-		bottomPanel.setBackground(updateBackground());
-		
-		return bottomPanel;
-	}
+	
 
 }
