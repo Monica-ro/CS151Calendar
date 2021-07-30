@@ -33,7 +33,7 @@ public class AgendaView extends JPanel implements ChangeListener {
      * Constructs an agenda view without dates.
      */
     public AgendaView(CalendarModel model) {
-        this.setPreferredSize(new Dimension(700, 470));
+        this.setPreferredSize(new Dimension(700, 457));
         this.setBackground(Color.GRAY);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
         JLabel date = new JLabel("AGENDA VIEW  " + formatter.format(model.getHighlightedDate()).toString());

@@ -11,96 +11,96 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class CreateView extends JPanel implements ChangeListener, ActionListener {
-	
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private String viewMetric;
-	private CalendarModel model;
-	private LocalDate highlightedDate;
-	JTextArea events;
-	JTextField eventName, weekDay, startTime, endTime, eventDate;
-	
-	
+
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String viewMetric;
+    private CalendarModel model;
+    private LocalDate highlightedDate;
+    JTextArea events;
+    JTextField eventName, weekDay, startTime, endTime, eventDate;
+
+
     CreateView(CalendarModel calModel) {
-		this.model = calModel;
-		this.viewMetric = "create";
-		this.highlightedDate = calModel.getHighlightedDate();
-		returnView();
-		
-	}
-    
+        this.model = calModel;
+        this.viewMetric = "create";
+        this.highlightedDate = calModel.getHighlightedDate();
+        returnView();
+
+    }
+
     public CreateView(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.viewMetric = "create";
     }
-    
-    
+
+
     public void returnView() {
-    	this.removeAll();
-    	
-    	//Primary Panel
-    	this.setLayout(new GridLayout(9, 1));
-    	this.setPreferredSize(new Dimension(700, 470));
-    	this.setBackground(Color.PINK);
-    	
-    	//Title of View and Highlighted Date Section
-    	JPanel dateholderPanel = new JPanel();
-    	dateholderPanel.setBackground(Color.PINK);
-    	this.add(dateholderPanel);
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
-    	JLabel date = new JLabel("CREATE VIEW  " + formatter.format(model.getHighlightedDate()).toString());
-    	highlightedDate =  LocalDate.parse(formatter.format(model.getHighlightedDate()).toString(), formatter);
-    	this.add(date);
-    	
-    	//Name of Event Section
-    	JPanel nameOfEventPanel = new JPanel();
-    	nameOfEventPanel.setBackground(Color.PINK);
-    	this.add(nameOfEventPanel);    	
-    	JLabel nameLabel = new JLabel();
-    	nameLabel.setText("Name of Event : ");
-    	nameOfEventPanel.add(nameLabel);
-    	JTextField nameOfEventTextField = new JTextField();
-    	nameOfEventTextField.setPreferredSize(new Dimension(250, 40));
-    	eventName = nameOfEventTextField;
-    	nameOfEventPanel.add(nameOfEventTextField);
-    	
-	    //StartTime of Event Section
-		JPanel startTimePanel = new JPanel();
-		startTimePanel.setBackground(Color.PINK);
-	    this.add(startTimePanel);
-	    JLabel startTimeLabel = new JLabel();
-	    startTimeLabel.setText("StartTime of Event (00:00) : ");
-	    startTimePanel.add(startTimeLabel);
-	    JTextField startTimeTextField = new JTextField();
-	    startTimeTextField.setPreferredSize(new Dimension(250, 40));
-	    startTime = startTimeTextField;
-	    startTimePanel.add(startTimeTextField);
-	    
-	    //EndTime of Event Section
-	    JPanel endTimePanel = new JPanel();
-	    endTimePanel.setBackground(Color.PINK);
-	    this.add(endTimePanel);
-	    JLabel endTimeLabel = new JLabel();
-	    endTimeLabel.setText("EndTime of Event (00:00) : ");
-	    endTimePanel.add(endTimeLabel);
-	    JTextField endTimeTextField = new JTextField();
-	    endTimeTextField.setPreferredSize(new Dimension(250, 40));
-	    endTime = endTimeTextField;
-	    endTimePanel.add(endTimeTextField);
-	    
-	    //Submit Button Section
-	    JPanel submitPanel = new JPanel();
-	    submitPanel.setBackground(Color.PINK);
-	    this.add(submitPanel);
-	    JButton submitBtn = new JButton("Create Event");
-	    submitBtn.setBounds(10, 80, 80 ,25);
-	    submitBtn.addActionListener(this);
-	    submitPanel.add(submitBtn);
-	    
-	}
-    
-    
+        this.removeAll();
+
+        //Primary Panel
+        this.setLayout(new GridLayout(9, 1));
+        this.setPreferredSize(new Dimension(700, 443));
+        this.setBackground(Color.PINK);
+
+        //Title of View and Highlighted Date Section
+        JPanel dateholderPanel = new JPanel();
+        dateholderPanel.setBackground(Color.PINK);
+        this.add(dateholderPanel);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
+        JLabel date = new JLabel("CREATE VIEW  " + formatter.format(model.getHighlightedDate()).toString());
+        highlightedDate = LocalDate.parse(formatter.format(model.getHighlightedDate()).toString(), formatter);
+        this.add(date);
+
+        //Name of Event Section
+        JPanel nameOfEventPanel = new JPanel();
+        nameOfEventPanel.setBackground(Color.PINK);
+        this.add(nameOfEventPanel);
+        JLabel nameLabel = new JLabel();
+        nameLabel.setText("Name of Event : ");
+        nameOfEventPanel.add(nameLabel);
+        JTextField nameOfEventTextField = new JTextField();
+        nameOfEventTextField.setPreferredSize(new Dimension(250, 40));
+        eventName = nameOfEventTextField;
+        nameOfEventPanel.add(nameOfEventTextField);
+
+        //StartTime of Event Section
+        JPanel startTimePanel = new JPanel();
+        startTimePanel.setBackground(Color.PINK);
+        this.add(startTimePanel);
+        JLabel startTimeLabel = new JLabel();
+        startTimeLabel.setText("StartTime of Event (00:00) : ");
+        startTimePanel.add(startTimeLabel);
+        JTextField startTimeTextField = new JTextField();
+        startTimeTextField.setPreferredSize(new Dimension(250, 40));
+        startTime = startTimeTextField;
+        startTimePanel.add(startTimeTextField);
+
+        //EndTime of Event Section
+        JPanel endTimePanel = new JPanel();
+        endTimePanel.setBackground(Color.PINK);
+        this.add(endTimePanel);
+        JLabel endTimeLabel = new JLabel();
+        endTimeLabel.setText("EndTime of Event (00:00) : ");
+        endTimePanel.add(endTimeLabel);
+        JTextField endTimeTextField = new JTextField();
+        endTimeTextField.setPreferredSize(new Dimension(250, 40));
+        endTime = endTimeTextField;
+        endTimePanel.add(endTimeTextField);
+
+        //Submit Button Section
+        JPanel submitPanel = new JPanel();
+        submitPanel.setBackground(Color.PINK);
+        this.add(submitPanel);
+        JButton submitBtn = new JButton("Create Event");
+        submitBtn.setBounds(10, 80, 80, 25);
+        submitBtn.addActionListener(this);
+        submitPanel.add(submitBtn);
+
+    }
+
+
     public ArrayList<Event> createEvents(CalendarModel model) {
         // loop through events in the model
         // and determine which events fit the criteria
@@ -114,66 +114,64 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         }
         return createEvents;
     }
-    
 
-    
+
     @Override
     public void stateChanged(ChangeEvent e) {
 
-    	// display contents
-    			// if the model's
-    			// view metric matches with this one
-    			if (model.getMetric().equalsIgnoreCase(viewMetric)) {
-    				returnView();
-    				System.out.println("This is the create view");
-    			}
-    			else {
-    				// don't display anything
-    			}
-    			
-    			
+        // display contents
+        // if the model's
+        // view metric matches with this one
+        if (model.getMetric().equalsIgnoreCase(viewMetric)) {
+            returnView();
+            System.out.println("This is the create view");
+        }
+        else {
+            // don't display anything
+        }
+
+
     }
-    
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		//eventName, weekDay, startTime, endTime, eventDate
-		String name = eventName.getText();
-		String start = startTime.getText();
-		String end = endTime.getText();
-		
-		//parse hr and min to check time
-		String starthr = start.substring(0, 2);
-		String startmin = start.substring(3, 5);
-		String endhr = end.substring(0, 2);
-		String endmin = end.substring(3, 5);
-		
-		//convert to int
-		int sHr = Integer.parseInt(starthr);
-		int sMin = Integer.parseInt(startmin);
-		int eHr = Integer.parseInt(endhr);
-		int eMin = Integer.parseInt(endmin);
-		
-		if( sHr>23 || sMin>59 || eHr>23 || sMin>59)
-		{
-			System.out.println("Invalid time. Please input correct time");
-			return;
-		}
-		
-		DateTimeFormatter timeformat = DateTimeFormatter.ofPattern("HH:mm");
-		LocalTime starttime = LocalTime.parse(start, timeformat);
-		LocalTime endtime = LocalTime.parse(end, timeformat);		
-		DayOfWeek dow = DayOfWeek.from(highlightedDate);
-		
-		Event event = new Event(name, dow.name(), starttime, endtime, highlightedDate, false);
-		model.addEvent(event);
-		System.out.println("Event was Created");
-		System.out.println(model.format(model.getData())); //prints the added event
-		
-	}
 
-	public String getViewMetric() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //eventName, weekDay, startTime, endTime, eventDate
+        String name = eventName.getText();
+        String start = startTime.getText();
+        String end = endTime.getText();
+
+        //parse hr and min to check time
+        String starthr = start.substring(0, 2);
+        String startmin = start.substring(3, 5);
+        String endhr = end.substring(0, 2);
+        String endmin = end.substring(3, 5);
+
+        //convert to int
+        int sHr = Integer.parseInt(starthr);
+        int sMin = Integer.parseInt(startmin);
+        int eHr = Integer.parseInt(endhr);
+        int eMin = Integer.parseInt(endmin);
+
+        if (sHr > 23 || sMin > 59 || eHr > 23 || sMin > 59) {
+            System.out.println("Invalid time. Please input correct time");
+            return;
+        }
+
+        DateTimeFormatter timeformat = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime starttime = LocalTime.parse(start, timeformat);
+        LocalTime endtime = LocalTime.parse(end, timeformat);
+        DayOfWeek dow = DayOfWeek.from(highlightedDate);
+
+        Event event = new Event(name, dow.name(), starttime, endtime, highlightedDate, false);
+        model.addEvent(event);
+        System.out.println("Event was Created");
+        System.out.println(model.format(model.getData())); //prints the added event
+
+    }
+
+    public String getViewMetric() {
         return viewMetric;
     }
 
