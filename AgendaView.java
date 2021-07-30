@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
- * @author Monica Orme
+ * @author Monica Orme, Nick Fong
  */
 
 /**
