@@ -206,6 +206,7 @@ public class CalendarTester {
         fromFile.addActionListener(event -> {
         	// specify file path
         	JFileChooser fileChoice = new JFileChooser();
+		boolean eventsRead = false;
 		    int returnValue = fileChoice.showOpenDialog(null);
 		    if(returnValue == JFileChooser.APPROVE_OPTION) {
 		       String filePath = fileChoice.getSelectedFile().getAbsolutePath();
@@ -213,8 +214,10 @@ public class CalendarTester {
 	        	File f = new File(filePath);
 	        	// parse the events from the file
 	        	try {
-					parsingEventsToCalendar(f, calModel);
-				} catch (IOException e) {
+				parsingEventsToCalendar(f, calModel);
+				eventsRead = true;
+				} 
+			    catch (IOException e) {
 					System.out.println("An IO Exception occurred. ");
 				}
 	        	catch(UnsupportedOperationException e) {
@@ -222,7 +225,7 @@ public class CalendarTester {
 	        	}
 		    }
 		    // make button invisible after clicking on it
-		    if(fromFile==(JButton)event.getSource()){
+		    if(fromFile==(JButton)event.getSource() && eventsRead==true){
 		    	fromFile.setEnabled(false);
 
 	        }
@@ -243,20 +246,28 @@ public class CalendarTester {
 	    
 	// add functionality to the buttons
         back.addActionListener(event -> {
-        	// check the current metric
+        	/ check the current metric
         	String metric = calModel.getMetric();
         	// adjust the current date pointer accordingly
         	if (metric.equalsIgnoreCase("day")) {
         		calModel.setHighlightedDate(calModel.getHighlightedDate().minusDays(1));
+        		//dayViewPanel.setHighlightedDate(calModel.getHighlightedDate());
+        		System.out.println("Day view panel's higlighted date: " + dayViewPanel.getHighlightedDate());
+    			bottomPanel.add(dayViewPanel,BorderLayout.CENTER);
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         	}
         	else if(metric.equalsIgnoreCase("month")) {
         		calModel.setHighlightedDate(calModel.getHighlightedDate().minusMonths(1));
+    			bottomPanel.add(monthViewPanel,BorderLayout.CENTER);
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         	}
         	else if(metric.equalsIgnoreCase("week")) {
         		calModel.setHighlightedDate(calModel.getHighlightedDate().minusWeeks(1));
+    			bottomPanel.add(weekViewPanel,BorderLayout.CENTER);
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         	}
         	else {
-        			
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());	
         	}	
         });
         
@@ -266,21 +277,25 @@ public class CalendarTester {
         	// adjust the current date pointer accordingly
         	if (metric.equalsIgnoreCase("day")) {
         		calModel.setHighlightedDate(calModel.getHighlightedDate().plusDays(1));
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         	}
         	else if(metric.equalsIgnoreCase("month")) {
         		calModel.setHighlightedDate(calModel.getHighlightedDate().plusMonths(1));
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         	}
         	else if(metric.equalsIgnoreCase("week")) {
         		calModel.setHighlightedDate(calModel.getHighlightedDate().plusWeeks(1));
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         	}
         	else {
+        		System.out.println("The current date is: " +  calModel.getHighlightedDate().toString());
         			
         	}	
         });
 	    today.addActionListener(event -> {
 		    // change the highlighted date to the today's date
 		    calModel.setHighlightedDate(calModel.getToday());
-        	
+		    System.out.println("The current date is: " +  calModel.getHighlightedDate());
         });
 	    
         currentViewButtons.add(today);
