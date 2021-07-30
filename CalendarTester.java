@@ -117,6 +117,26 @@ public class CalendarTester {
                 frame.revalidate();
             }
         });
+	    
+	JButton darkMode = new JButton("Dark Mode");
+        darkMode.addActionListener( event -> {
+        	topPanel.remove(monthPanel);
+        	topPanel.add(new DarkMode().updatePanelTheme(monthPanel));
+        	frame.revalidate();
+        	
+        });
+        
+        JButton lightMode = new JButton("Light Mode");
+        lightMode.addActionListener(event -> {
+        	topPanel.remove(monthPanel);
+        	topPanel.add(new LightMode().updatePanelTheme(monthPanel));
+        	topPanel.revalidate();
+        	topPanel.repaint();
+        	//frame.revalidate();
+        });
+        
+        monthButtons.add(darkMode);
+        monthButtons.add(lightMode);    
         monthButtons.add(backMonth);
         monthButtons.add(forwardMonth);
 
