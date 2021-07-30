@@ -31,7 +31,7 @@ public class DayView extends JPanel implements ChangeListener {
 		this.revalidate();
 		
 		this.setLayout(new BorderLayout());
-		this.setPreferredSize(new Dimension(700, 470));
+		this.setPreferredSize(new Dimension(700, 457));
 		
 		// include panel display methods here
 		events = new JTextArea();
