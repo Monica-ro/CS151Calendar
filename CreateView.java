@@ -4,6 +4,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -87,18 +88,6 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 	    endTime = endTimeTextField;
 	    endTimePanel.add(endTimeTextField);
 	    
-	    //Day of the Week Section
-	    JPanel dayofweekPanel = new JPanel();
-	    dayofweekPanel.setBackground(Color.PINK);
-	    this.add(dayofweekPanel);
-	    JLabel dayofweekLabel = new JLabel();
-	    dayofweekLabel.setText("Day of Week : ");
-	    dayofweekPanel.add(dayofweekLabel);
-	    JTextField dayofweekRequest = new JTextField();
-	    dayofweekRequest.setPreferredSize(new Dimension(250, 40));
-	    weekDay = dayofweekRequest;
-	    dayofweekPanel.add(dayofweekRequest);
-	    
     	//Date of Event Section
 	    JPanel dateOfEventPanel = new JPanel();
 	    dateOfEventPanel.setBackground(Color.PINK);
@@ -162,7 +151,6 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 		
 		//eventName, weekDay, startTime, endTime, eventDate
 		String name = eventName.getText();
-		String dayOfWeek = weekDay.getText();
 		String start = startTime.getText();
 		String end = endTime.getText();
 		String date = eventDate.getText();
@@ -171,8 +159,9 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 		LocalTime starttime = LocalTime.parse(start, timeformat);
 		LocalTime endtime = LocalTime.parse(end, timeformat);
 		LocalDate day = LocalDate.parse(date);
+		DayOfWeek dow = DayOfWeek.from(day);
 		
-		Event event = new Event(name, dayOfWeek, starttime, endtime, day);
+		Event event = new Event(name, dow.name(), starttime, endtime, day);
 		model.addEvent(event);
 		System.out.println("Event was Created");
 		System.out.println(model.format(model.getData())); //prints the added event
