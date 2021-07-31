@@ -6,8 +6,8 @@
  */
 
 public class TimeInterval {
-    private int startTime;
-    private int endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
     private String startTimeString;
     private String endTimeString;
 
