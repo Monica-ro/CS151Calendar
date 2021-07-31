@@ -17,6 +17,7 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     private String viewMetric;
     private CalendarModel model;
     private LocalDate highlightedDate;
+    private ArrayList<Event> currentEventData;
     JTextArea events;
     JTextField eventName, weekDay, startTime, endTime, eventDate;
 
@@ -40,7 +41,7 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         this.removeAll();
 
         //Primary Panel
-        this.setLayout(new GridLayout(9, 1));
+        this.setLayout(new GridLayout(10, 1));
         this.setPreferredSize(new Dimension(700, 443));
         this.setBackground(Color.PINK);
 
@@ -64,6 +65,18 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         nameOfEventTextField.setPreferredSize(new Dimension(250, 40));
         eventName = nameOfEventTextField;
         nameOfEventPanel.add(nameOfEventTextField);
+        
+        //Date of Event Section
+        JPanel dateOfEventPanel = new JPanel();
+        dateOfEventPanel.setBackground(Color.PINK);
+        this.add(dateOfEventPanel);
+        JLabel dateLabel = new JLabel();
+        dateLabel.setText("Date of Event (MM/dd/yyyy) : ");
+        dateOfEventPanel.add(dateLabel);
+        JTextField dateOfEventTextField = new JTextField();
+        dateOfEventTextField.setPreferredSize(new Dimension(250, 40));
+        eventDate = dateOfEventTextField;
+        dateOfEventPanel.add(dateOfEventTextField);
 
         //StartTime of Event Section
         JPanel startTimePanel = new JPanel();
@@ -122,6 +135,10 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         // display contents
         // if the model's
         // view metric matches with this one
+    	
+    	this.highlightedDate = model.getHighlightedDate();
+        this.currentEventData = model.getData();
+    	
         if (model.getMetric().equalsIgnoreCase(viewMetric)) {
             returnView();
             System.out.println("This is the create view");
@@ -130,17 +147,30 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
             // don't display anything
         }
 
-
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        //eventName, weekDay, startTime, endTime, eventDate
+        //eventName startTime, endTime, eventDate
         String name = eventName.getText();
         String start = startTime.getText();
         String end = endTime.getText();
+        String date = eventDate.getText();
+        
+        //parse date and convert to int
+        int month = Integer.parseInt(date.substring(0,2));
+        int day = Integer.parseInt(date.substring(3,5));
+        int year = Integer.parseInt(date.substring(6,10));
+        
+        if(month<=0 || month>12 || day<=0 || day>31)
+        {
+        	System.out.println("Invalid Date. Please input correct date");
+        	return;
+        }
+        
+        LocalDate dt = LocalDate.of(year, month, day);
 
         //parse hr and min to check time
         String starthr = start.substring(0, 2);
@@ -154,7 +184,7 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         int eHr = Integer.parseInt(endhr);
         int eMin = Integer.parseInt(endmin);
 
-        if (sHr > 23 || sMin > 59 || eHr > 23 || sMin > 59) {
+        if (sHr > 23 || sMin > 59 || eHr > 23 || eMin > 59) {
             System.out.println("Invalid time. Please input correct time");
             return;
         }
@@ -162,9 +192,9 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         DateTimeFormatter timeformat = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime starttime = LocalTime.parse(start, timeformat);
         LocalTime endtime = LocalTime.parse(end, timeformat);
-        DayOfWeek dow = DayOfWeek.from(highlightedDate);
+        DayOfWeek dow = DayOfWeek.from(dt);
 
-        Event event = new Event(name, dow.name(), starttime, endtime, highlightedDate, false);
+        Event event = new Event(name, dow.name(), starttime, endtime, dt, false);
         model.addEvent(event);
         System.out.println("Event was Created");
         System.out.println(model.format(model.getData())); //prints the added event
@@ -176,3 +206,4 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     }
 
 }
+
