@@ -6,83 +6,137 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-/**
- * @author Monica Orme, Nick Fong
- */
-
-/**
- * A view for the agenda option within the calendar model.
- */
 public class AgendaView extends JPanel implements ChangeListener {
-
-
-    //Ideas:
-    /* its parameters would include a specific set
-     * of local dates
-     * that are passed to the constructor
-     * so a start date and end date is needed
-
-
-     */
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private CalendarModel model;
     private String viewMetric;
+    private LocalDate dateIterator;
+    private ArrayList<Event> currentEventData;
+    private JTextArea events;
+    private JLabel currentDateToDisplay;
+    private LocalDate localStart;
+    private LocalDate localEnd;
+    private JScrollPane calendar;
 
 
-    /**
-     * Constructs an agenda view without dates.
-     */
-    public AgendaView(CalendarModel model) {
-        this.setPreferredSize(new Dimension(700, 457));
-        this.setBackground(Color.GRAY);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
-        JLabel date = new JLabel("AGENDA VIEW  " + formatter.format(model.getHighlightedDate()).toString());
-        this.add(date);
-    }
-
-    /**
-     * Constructs an agenda view
-     *
-     * @param startDate - the beginning date within the agenda
-     * @param endDate   - the beginning date within the agenda
-     */
-    public AgendaView(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    AgendaView(CalendarModel calModel) {
+        this.model = calModel;
         this.viewMetric = "agenda";
+        this.currentEventData = calModel.getData();
+        this.setPreferredSize(new Dimension(700, 455));
+
+        returnView();
+
     }
 
-    /**
-     * returns events within the agenda view
-     *
-     * @param model - the calendar model
-     * @return agendaEvents - the events from the model that will be in the agenda view
-     */
-    public ArrayList<Event> getAgendaEvents(CalendarModel model) {
-        // loop through events in the model
-        // and determine which events fit the criteria
-        // then return those events
+    public void returnView() {
 
-        ArrayList<Event> agendaEvents = new ArrayList<>();
+        this.removeAll();
+        this.revalidate();
+
+        JLabel start = new JLabel("Start Date (MM/DD/YYYY)");
+        this.add(start);
+        JTextField startDate = new JTextField();
+        startDate.setPreferredSize(new Dimension(100, 35));
+        this.add(startDate);
+        JLabel end = new JLabel("End Date (MM/DD/YYYY)");
+        this.add(end);
+        JTextField endDate = new JTextField();
+        endDate.setPreferredSize(new Dimension(100, 35));
+        this.add(endDate);
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(event -> {
+            try {
+                this.remove(calendar);
+                this.revalidate();
+                String startInput = startDate.getText();
+                localStart = LocalDate.of(Integer.parseInt(startInput.substring(6, 10)), Integer.parseInt(startInput.substring(0, 2)), Integer.parseInt(startInput.substring(3, 5)));
+                String endInput = endDate.getText();
+                localEnd = LocalDate.of(Integer.parseInt(endInput.substring(6, 10)), Integer.parseInt(endInput.substring(0, 2)), Integer.parseInt(endInput.substring(3, 5)));
+
+                if (localStart.isAfter(localEnd) || localStart.equals(localEnd)) {
+                    throw new Exception("Invalid Input");
+                }
+
+                this.add(printAgenda(localStart, localEnd));
+                this.revalidate();
+                this.repaint();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        this.add(searchButton);
+
+        calendar = printAgenda(dateIterator, dateIterator);
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                calendar.getVerticalScrollBar().setValue(0);
+            }
+        });
+
+        this.add(calendar);
+
+        calendar.revalidate();
+        calendar.repaint();
+
+    }
+
+
+    public JScrollPane printAgenda(LocalDate s, LocalDate e) {
+        JTextArea agenda = new JTextArea();
+        JScrollPane scroll = new JScrollPane(agenda);
+        agenda.setSelectionStart(0);
+        agenda.setSelectionEnd(0);
+
+        dateIterator = localStart;
+        if (localStart == null || localEnd == null) {
+            return scroll;
+        }
+        while (dateIterator.isBefore(localEnd) || dateIterator.equals(localEnd)) {
+            if (!getMonthEvents().isEmpty()) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
+                agenda.append("---" + formatter.format(dateIterator) + "---" + "\n");
+                agenda.append(model.format(getMonthEvents()) + "\n");
+            }
+            dateIterator = dateIterator.plusDays(1);
+
+        }
+
+
+        agenda.append(model.format(getMonthEvents()) + "\n");
+        scroll.setPreferredSize(new Dimension(700, 400));
+        return scroll;
+
+    }
+
+
+    public ArrayList<Event> getMonthEvents() {
+        ArrayList<Event> monthEvents = new ArrayList<>();
+
+        // add events
         for (Event e : model.getData()) {
-            if (e.getDate().isAfter(startDate) && e.getDate().isBefore(endDate) || e.getDate().equals(startDate) || e.getDate().equals(endDate)) {
-                agendaEvents.add(e);
+            if (e.getDate().equals(dateIterator)) {
+                monthEvents.add(e);
             }
         }
-        return agendaEvents;
+
+        return monthEvents;
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        // TODO Auto-generated method stub
+        // display contents
+        // if the model's
+        // view metric matches with this one
+        this.currentEventData = model.getData();
+
+        if (model.getMetric().equalsIgnoreCase(viewMetric)) {
+            returnView();
+            System.out.println("This is the agenda view");
+        }
+        else {
+            // don't display anything
+        }
 
     }
-
-    /**
-     * @return viewMetric - the day view as a String
-     */
-    public String getViewMetric() {
-        return viewMetric;
-    }
-
 }
