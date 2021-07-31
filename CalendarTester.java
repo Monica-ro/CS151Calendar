@@ -26,11 +26,14 @@ public class CalendarTester {
     public static MonthPanel monthPanel;
     public static JPanel bottomPanel;
     public static JPanel topPanel;
+    static JPanel viewButtons;
     static DayView dayViewPanel;
     static AgendaView agendaViewPanel;
     static WeekView weekViewPanel;
     static MonthView monthViewPanel;
     static CreateView createViewPanel;
+    static JPanel monthButtons;
+    static JPanel currentViewButtons;
 
 
     /**
@@ -123,23 +126,38 @@ public class CalendarTester {
 
         JButton darkMode = new JButton("Dark Mode");
         darkMode.addActionListener(event -> {
-            topPanel.remove(monthPanel);
-            topPanel.add(new DarkMode().updatePanelTheme(monthPanel));
+        	monthButtons.setBackground(new DarkMode().updateBackground());
+        	topPanel.setBackground(new DarkMode().updateBackground());
+        	bottomPanel.setBackground(new DarkMode().updateBackground());
+        	viewButtons.setBackground(new DarkMode().updateBackground());
+        	currentViewButtons.setBackground(new DarkMode().updateBackground());
             frame.revalidate();
 
         });
 
         JButton lightMode = new JButton("Light Mode");
         lightMode.addActionListener(event -> {
-            topPanel.remove(monthPanel);
-            topPanel.add(new LightMode().updatePanelTheme(monthPanel));
-            topPanel.revalidate();
-            topPanel.repaint();
-            //frame.revalidate();
+            monthButtons.setBackground(new LightMode().updateBackground());
+            topPanel.setBackground(new LightMode().updateBackground());
+        	bottomPanel.setBackground(new LightMode().updateBackground());
+        	viewButtons.setBackground(new LightMode().updateBackground());
+        	currentViewButtons.setBackground(new LightMode().updateBackground());
+            frame.revalidate();
+        });
+        
+        JButton resetMode = new JButton("Reset Mode");
+        resetMode.addActionListener(event -> {
+            monthButtons.setBackground(monthPanel.getBackground());
+            topPanel.setBackground(monthPanel.getBackground());
+        	bottomPanel.setBackground(monthPanel.getBackground());
+        	viewButtons.setBackground(monthPanel.getBackground());
+        	currentViewButtons.setBackground(monthPanel.getBackground());
+            frame.revalidate();
         });
 
         monthButtons.add(darkMode);
         monthButtons.add(lightMode);
+        monthButtons.add(resetMode);
         monthButtons.add(backMonth);
         monthButtons.add(forwardMonth);
 
@@ -393,12 +411,9 @@ public class CalendarTester {
                     LocalDate endDate = LocalDate.parse(eventEndDate, dateformatter);
 
                     // construct an event
-                    // and store it in the calendar model
-                    //TimeInterval ti = new TimeInterval(eventStartTime,eventEndTime);
-
-                    // String name, LocalDate startDate, LocalDate endDate, String daysofTheWeek, LocalTime startTime, LocalTime endTime, boolean isRecurring
-                    Event event = new Event(eventName, startDate, endDate, eventDaysOfTheWeek, eventStartTime, eventEndTime, true);
-                    model.addEvent(event);
+                    TimeInterval ti = new TimeInterval(eventStartTime, eventEndTime);
+                    Event e = new Event(eventName, startDate, endDate, eventDaysOfTheWeek, ti, true);
+                    model.addEvent(e);
                 }
 
             }
