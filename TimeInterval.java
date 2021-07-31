@@ -73,35 +73,16 @@ public class TimeInterval implements Comparable<TimeInterval>{
 
     /**
      * Checks if the time interval is valid
-     *
-     * @param e event
-     * @return boolean if there is an interference
+     * @return boolean if time interval is invalid
      */
-    public boolean overlap(Event e) {
-        boolean overlap = false;
-        /*
-        if (e.getTimeInterval().getStart() >= getStart() && e.getTimeInterval().getStart() <= getEnd() ||
-                e.getTimeInterval().getEnd() >= getStart() && e.getTimeInterval().getEnd() <= getEnd() ||
-                e.getTimeInterval().getStart() == getStart() || e.getTimeInterval().getStart() == getEnd() ||
-                e.getTimeInterval().getEnd() == getStart() || e.getTimeInterval().getEnd() == getEnd()) {
-            overlap = true;
-        }
-        */
-        
-        if (e.getTimeInterval().getStart().isAfter(this.startTime) && e.getTimeInterval().getStart().isBefore(this.endTime) ||
-                e.getTimeInterval().getEnd().isAfter(this.startTime) && e.getTimeInterval().getEnd().isBefore(this.endTime) ||
-                e.getTimeInterval().getStart().equals(this.startTime) || e.getTimeInterval().getStart().equals(this.endTime) ||
-                e.getTimeInterval().getEnd().equals(this.startTime)|| e.getTimeInterval().getEnd().equals(this.endTime)) {
-            overlap = true;
-        }
-
-        return overlap;
+    public boolean overlap() {
+       return startTime.isAfter(endTime);
     }
     
     @Override
 	public int compareTo(TimeInterval that) {
 		int stComp = this.startTime.compareTo(that.startTime);
-		int etComp = this.startTime.compareTo(that.startTime);
+		int etComp = this.endTime.compareTo(that.endTime);
 		
 		if (stComp != 0) {
 			return stComp;
