@@ -79,14 +79,18 @@ public class CalendarModel {
 		return metric;
 	}
 	
-    // mutator
-	 /**
-    Adds the event to the calendar model and notifies all change listeners
+    // MUTATOR	
+    /**
+    Adds the event to the calendar model that contains a valid time interval and notifies all change listeners
     in the model about this update. 
     @param e - an event
 	  */
 	 public void addEvent(Event e) {
-	    //events.put(e.getDate(), add(e));
+		 if (e.getTimeInterval().overlap()==true) {
+			 System.out.println("Cannot add event: " + e);
+			 return;
+		 }
+		 
 		 events.add(e);
 		 update();
 	 }
