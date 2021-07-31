@@ -21,7 +21,9 @@ public interface ColorModeStrategy {
      @param original - the original JPanel
      @return JPanel - a Jpanel with an updated background color
      */
+    /*
     public JPanel updatePanelTheme(JPanel original);
+    */
 
 
 }

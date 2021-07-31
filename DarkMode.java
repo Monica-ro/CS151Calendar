@@ -17,6 +17,7 @@ public class DarkMode implements ColorModeStrategy {
         return Color.darkGray;
     }
 
+    /*
     @Override
     public JPanel updatePanelTheme(JPanel original) {
         JPanel newPanel = original;
@@ -24,6 +25,7 @@ public class DarkMode implements ColorModeStrategy {
 
         return newPanel;
     }
+    */
 
 
 }
