@@ -5,9 +5,18 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ [DESCRIPTION
+
+     */
 public class MonthPanel extends JPanel {
     private LocalDate date;
 
+    /**
+     * [METHOD DESCRIPTION
+     *
+     * @return [FILL THIS IN]
+     */
     public MonthPanel(CalendarModel cal, LocalDate l) {
         date = LocalDate.of(l.getYear(), l.getMonth(), 1);
         int rows = 6;
@@ -51,6 +60,11 @@ public class MonthPanel extends JPanel {
 
     }
 
+    /**
+     * [METHOD DESCRIPTION
+     *
+     * @return [FILL THIS IN]
+     */
     public int getFirstOfMonth(LocalDate l) {
         LocalDate x = LocalDate.of(l.getYear(), l.getMonth(), 1);
         return weekTool(x.getDayOfWeek().toString());
