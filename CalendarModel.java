@@ -86,11 +86,12 @@ public class CalendarModel {
     @param e - an event
 	  */
 	 public void addEvent(Event e) {
+		 /*
 		 if (e.getTimeInterval().overlap()==true) {
 			 System.out.println("Cannot add event: " + e);
 			 return;
 		 }
-		 
+		 */
 		 events.add(e);
 		 update();
 	 }
