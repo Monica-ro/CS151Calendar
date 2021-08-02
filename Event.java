@@ -172,7 +172,7 @@ public class Event implements Comparable<Event> {
 	
 	@Override
 	public int hashCode() {
-		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + date.hashCode() + startDate.hashCode() + endDate.hashCode();
+		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + startTime.hashCode() + endTime.hashCode() + startDate.hashCode() + endDate.hashCode();
 	}
 
 
