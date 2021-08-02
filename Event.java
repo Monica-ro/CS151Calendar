@@ -172,17 +172,17 @@ public class Event implements Comparable<Event> {
 	
 	@Override
 	public int hashCode() {
-		return name.hashCode() + daysofTheWeek.hashCode() + ti.hashCode() + startTime.hashCode() + endTime.hashCode() + startDate.hashCode() + endDate.hashCode();
+		return name.hashCode() + daysofTheWeek.hashCode() + startTime.hashCode() + endTime.hashCode() + startDate.hashCode() + endDate.hashCode();
 	}
 
 
 	@Override
 	public String toString() {
 		if(isRecurring==true) {
-			return "Event: " + name + " " + daysofTheWeek + " " + ti;
+			return "Event: " + name + " " + daysofTheWeek + " " + startTime + "-" + endTime;
 		}
 		else {
-			return "Event: " + name + "  " + daysofTheWeek + " " + ti;
+			return "Event: " + name + "  " + daysofTheWeek + " " + startTime + "-" + endTime;
 		}
 		
 	}
