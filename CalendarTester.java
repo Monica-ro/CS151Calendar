@@ -411,8 +411,8 @@ public class CalendarTester {
                     LocalDate endDate = LocalDate.parse(eventEndDate, dateformatter);
 
                     // construct an event
-                    TimeInterval ti = new TimeInterval(eventStartTime, eventEndTime);
-                    Event e = new Event(eventName, startDate, endDate, eventDaysOfTheWeek, ti, true);
+                    //TimeInterval ti = new TimeInterval(eventStartTime, eventEndTime);
+                    Event e = new Event(eventName, startDate, endDate, eventDaysOfTheWeek, eventStartTime, eventEndTime, true);
                     model.addEvent(e);
                 }
 
