@@ -192,10 +192,10 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
         DateTimeFormatter timeformat = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime starttime = LocalTime.parse(start, timeformat);
         LocalTime endtime = LocalTime.parse(end, timeformat);
-        TimeInterval ti = new TimeInterval(starttime, endtime);
+        //TimeInterval ti = new TimeInterval(starttime, endtime);
         DayOfWeek dow = DayOfWeek.from(dt);
 
-        Event event = new Event(name, dow.name(), ti, dt, false);
+        Event event = new Event(name, dow.name(), starttime, endtime, dt, false);
         model.addEvent(event);
         System.out.println("Event was Created");
         System.out.println(model.format(model.getData())); //prints the added event
