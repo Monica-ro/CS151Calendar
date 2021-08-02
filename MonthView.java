@@ -15,12 +15,16 @@ public class MonthView extends JPanel implements ChangeListener {
     private ArrayList<Event> currentEventData;
     private JTextArea events;
     private JLabel currentDateToDisplay;
+    private char currentDayOfTheWeek;
+    private char[] daysOfWeekConversion = {' ', 'M', 'T', 'W', 'H', 'F', 'A', 'S'};
+    private char dow;
 
 
     MonthView(CalendarModel calModel) {
         this.model = calModel;
         this.viewMetric = "month";
         this.highlightedDate = calModel.getHighlightedDate();
+        this.currentDayOfTheWeek = daysOfWeekConversion[highlightedDate.getDayOfWeek().getValue()];
         this.currentEventData = calModel.getData();
 
         returnView();
@@ -55,6 +59,7 @@ public class MonthView extends JPanel implements ChangeListener {
         ArrayList events = getMonthEvents();
         for (int i = 1; i <= highlightedDate.lengthOfMonth(); i++) {
             currentDate = LocalDate.of(highlightedDate.getYear(), highlightedDate.getMonth(), Integer.valueOf(i));
+            dow = daysOfWeekConversion[currentDate.getDayOfWeek().getValue()];
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
             calendar.append("---" + formatter.format(currentDate) + "---" + "\n");
             calendar.append(model.format(getMonthEvents()) + "\n");
@@ -72,16 +77,31 @@ public class MonthView extends JPanel implements ChangeListener {
 
         // add events
         for (Event e : model.getData()) {
-            if (e.getDate().equals(currentDate)) {
+            if (e.getDate().equals(currentDate) && !e.getIsRecurring()) {
+                monthEvents.add(e);
+            }
+            if (e.getIsRecurring() == true && currentDate.isAfter(e.getStartDate()) && currentDate.isBefore(e.getEndDate()) && containsDayOfWeek(e, dow) == true
+                    || e.getIsRecurring() == true && currentDate.equals(e.getStartDate()) && containsDayOfWeek(e, dow) == true
+                    || e.getIsRecurring() == true && currentDate.equals(e.getEndDate()) && containsDayOfWeek(e, dow) == true) {
                 monthEvents.add(e);
             }
         }
-
-//        monthEvents.add(new Event("test1", "3", LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 7, 29), false));
-//        monthEvents.add(new Event("test2", "3", LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 7, 30), false));
-//        monthEvents.add(new Event("test3", "3", LocalTime.of(15, 0), LocalTime.of(16, 0), LocalDate.of(2021, 7, 30), false));
-
         return monthEvents;
+    }
+
+    /**
+     * Checks if the highlighted date's day of the week matches with the recurring event
+     *
+     * @param ev - an Event
+     * @return a boolean where true indicates that the current date's (in the model) day of the week matches with the event and false otherwise
+     */
+    public boolean containsDayOfWeek(Event ev, char dow) {
+        char[] daysOfWeekEvent = ev.getDaysofTheWeek().toCharArray();
+        for (char c : daysOfWeekEvent) {
+            if (dow == c)
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -91,6 +111,7 @@ public class MonthView extends JPanel implements ChangeListener {
         // view metric matches with this one
         this.highlightedDate = model.getHighlightedDate();
         this.currentEventData = model.getData();
+        this.currentDayOfTheWeek = daysOfWeekConversion[model.getHighlightedDate().getDayOfWeek().getValue()];
 
         if (model.getMetric().equalsIgnoreCase(viewMetric)) {
             returnView();
