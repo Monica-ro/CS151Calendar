@@ -22,6 +22,10 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     JTextField eventName, weekDay, startTime, endTime, eventDate;
 
 
+    /**
+     * Ctor that initiates the Create View Panel
+     * @param calModel calendar model being ran
+     */
     CreateView(CalendarModel calModel) {
         this.model = calModel;
         this.viewMetric = "create";
@@ -30,6 +34,11 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 
     }
 
+    /**
+     * Ctor that passes LocalDate parameters for views instance variables
+     * @param startDate
+     * @param endDate
+     */
     public CreateView(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -37,6 +46,9 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     }
 
 
+    /**
+     * Method used to create the panel for Create view. Creates all JtextAreas, JLabels and Buttons
+     */
     public void returnView() {
         this.removeAll();
 
@@ -114,6 +126,11 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     }
 
 
+    /**
+     * Method that adds events from calendar model to an arraylist that have startdate is before enddate 
+     * @param model Calendar Model of the program
+     * @return
+     */
     public ArrayList<Event> createEvents(CalendarModel model) {
         // loop through events in the model
         // and determine which events fit the criteria
@@ -129,7 +146,10 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     }
 
 
-    @Override
+    /**
+     * Method that checks if metric is the same. It prints that its in create view
+     * @Override
+     */
     public void stateChanged(ChangeEvent e) {
 
         // display contents
@@ -150,7 +170,11 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
     }
 
 
-    @Override
+    /**
+     * Method used when the Create Event button is clicked
+     * This method reads all JTextAreas and creates an Event and adds it to models arraylist
+     * @Override
+     */
     public void actionPerformed(ActionEvent e) {
 
         //eventName startTime, endTime, eventDate
@@ -202,6 +226,10 @@ public class CreateView extends JPanel implements ChangeListener, ActionListener
 
     }
 
+    /**
+     * Method getter that returns viewMetric
+     * @return String viewMetric
+     */
     public String getViewMetric() {
         return viewMetric;
     }
