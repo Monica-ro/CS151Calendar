@@ -13,8 +13,8 @@ import java.time.*;
 */
 public class Event implements Comparable<Event> {
 	private String name, daysofTheWeek;
-	//private LocalTime startTime, endTime;
-	private TimeInterval ti;
+	private LocalTime startTime, endTime;
+	//private TimeInterval ti;
 	private LocalDate date, startDate, endDate;
 	private boolean isRecurring;
 	//private int startMonth, endMonth, year;
@@ -35,12 +35,14 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a recurring event
 	*/
-	public Event(String name, LocalDate startDate, LocalDate endDate, String daysofTheWeek, TimeInterval ti, boolean isRecurring) {
+	public Event(String name, LocalDate startDate, LocalDate endDate, String daysofTheWeek,LocalTime startTime,LocalTime endTime, boolean isRecurring) {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.daysofTheWeek = daysofTheWeek;
-		this.ti = ti;
+		//this.ti = ti;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.date = startDate;
 		this.isRecurring = true;
 		
@@ -53,7 +55,7 @@ public class Event implements Comparable<Event> {
 	/**
 	Constructs a one-time event
 	*/
-	public Event(String name, String daysofTheWeek, TimeInterval ti, LocalDate date, boolean isRecurring) {
+	public Event(String name, String daysofTheWeek,LocalTime startTime,LocalTime endTime, LocalDate date, boolean isRecurring) {
 		//TODO - need to figure out way to convert int day of week to String, may need an array or method
 		// same for start month and end month
 		this.name = name;
@@ -62,6 +64,8 @@ public class Event implements Comparable<Event> {
 		this.isRecurring = false;
 		this.startDate = date;
 		this.endDate = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 
 	
@@ -127,9 +131,9 @@ public class Event implements Comparable<Event> {
 		int daysComp = this.daysofTheWeek.compareTo(that.daysofTheWeek);
 		int startDateComp = this.startDate.compareTo(that.startDate);
 		int endDateComp = this.endDate.compareTo(that.endDate);
-		//int startTimeComp = this.startTime.compareTo(that.startTime);
-		//int endTimeComp = this.endTime.compareTo(that.endTime);
-		int tiComp = this.ti.compareTo(that.ti);
+		int startTimeComp = this.startTime.compareTo(that.startTime);
+		int endTimeComp = this.endTime.compareTo(that.endTime);
+		//int tiComp = this.ti.compareTo(that.ti);
 		
 		if (startDateComp != 0) {
 			return startDateComp;
@@ -137,17 +141,19 @@ public class Event implements Comparable<Event> {
 		else if (endDateComp != 0) {
 			return endDateComp;
 		}
+		/*
 		else if (tiComp !=0) {
 			return tiComp;
 		}
-		/*
+		*/
+		
 		else if (startTimeComp != 0) {
 			return startTimeComp;
 		}
 		else if (endTimeComp != 0) {
 			return endTimeComp;
 		}
-		*/
+		
 		else if (daysComp != 0) {
 			return daysComp;
 		} 
@@ -180,12 +186,13 @@ public class Event implements Comparable<Event> {
 		}
 		
 	}
-
+/*
 	public TimeInterval getTimeInterval() {
 		return ti;
 	}
+	*/
 	
-	/*
+	
 	public LocalTime getStartTime() {
 		return startTime;
 	}
@@ -193,5 +200,5 @@ public class Event implements Comparable<Event> {
 	public LocalTime getEndTime() {
 		return endTime;
 	}
-	*/	
+		
 }
