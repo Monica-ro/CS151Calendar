@@ -6,16 +6,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- [DESCRIPTION
-
-     */
+ * Top Panel that displays days of month as JButtons
+ */
 public class MonthPanel extends JPanel {
     private LocalDate date;
 
     /**
-     * [METHOD DESCRIPTION
+     * Constructor for MonthPanel
      *
-     * @return [FILL THIS IN]
+     * @param cal CalendarModel
+     * @param l   LocalDate
      */
     public MonthPanel(CalendarModel cal, LocalDate l) {
         date = LocalDate.of(l.getYear(), l.getMonth(), 1);
@@ -61,15 +61,22 @@ public class MonthPanel extends JPanel {
     }
 
     /**
-     * [METHOD DESCRIPTION
-     *
-     * @return [FILL THIS IN]
+     * reutrns the first of the month
+     * @param l Local date used to get its first of the month
+     * @return the day of the week that is the first of the month
      */
     public int getFirstOfMonth(LocalDate l) {
         LocalDate x = LocalDate.of(l.getYear(), l.getMonth(), 1);
         return weekTool(x.getDayOfWeek().toString());
     }
 
+    /**
+     * sets the highlighted date
+     * 
+     * @param cal
+     * @param date
+     * @param day
+     */
     public void setHighlightedDate(CalendarModel cal, LocalDate date, String day) {
         LocalDate highlighted = LocalDate.of(date.getYear(), date.getMonth(), Integer.valueOf(day));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
@@ -78,9 +85,9 @@ public class MonthPanel extends JPanel {
     }
 
     /**
-     * [METHOD DESCRIPTION
-     *
-     * @return [FILL THIS IN]
+     * helper to get the day of the week
+     * @param day
+     * @return int dependsing on the day of the week
      */
     public static int weekTool(String day) {
         if (day.equals("SUNDAY")) {
