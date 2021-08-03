@@ -20,6 +20,11 @@ public class MonthView extends JPanel implements ChangeListener {
     private char dow;
 
 
+    /**
+     * Constructs the Month view in the calendar.
+     *
+     * @param calModel - The calendar model of CalendarModel type
+     */
     MonthView(CalendarModel calModel) {
         this.model = calModel;
         this.viewMetric = "month";
@@ -30,6 +35,9 @@ public class MonthView extends JPanel implements ChangeListener {
         returnView();
     }
 
+    /**
+     * Updates the view panel upon construction and whenever there is an update in the model if the user has selected Month view.
+     */
     public void returnView() {
         this.removeAll();
         this.revalidate();
@@ -49,8 +57,12 @@ public class MonthView extends JPanel implements ChangeListener {
 
     }
 
+    /**
+     * prints the calendar
+     *
+     * @return JScrollPane
+     */
     public JScrollPane printCalendar() {
-
 
         JTextArea calendar = new JTextArea();
         calendar.setSelectionStart(0);
@@ -72,6 +84,11 @@ public class MonthView extends JPanel implements ChangeListener {
     }
 
 
+    /**
+     * Obtains the list of events that occur on the current date
+     *
+     * @return a list of events that occur on the current date as ArrayList<Event>
+     */
     public ArrayList<Event> getMonthEvents() {
         ArrayList<Event> monthEvents = new ArrayList<>();
 
