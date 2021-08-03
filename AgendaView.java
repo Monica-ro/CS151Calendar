@@ -109,12 +109,10 @@ public class AgendaView extends JPanel implements ChangeListener {
             return scroll;
         }
         while (dateIterator.isBefore(localEnd) || dateIterator.equals(localEnd)) {
-            if (!getAgendaEvents().isEmpty()) {
-                dow = daysOfWeekConversion[dateIterator.getDayOfWeek().getValue()];
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
-                agenda.append("---" + formatter.format(dateIterator) + "---" + "\n");
-                agenda.append(model.format(getAgendaEvents()) + "\n");
-            }
+            dow = daysOfWeekConversion[dateIterator.getDayOfWeek().getValue()];
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d yyyy");
+            agenda.append("---" + formatter.format(dateIterator) + "---" + "\n");
+            agenda.append(model.format(getAgendaEvents()) + "\n");
             dateIterator = dateIterator.plusDays(1);
 
         }
